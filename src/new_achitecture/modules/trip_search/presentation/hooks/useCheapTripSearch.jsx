@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import common_routes from '../../data/jsons/cheapTripData/routes.json';
 import fixed_routes from '../../data/jsons/cheapTripData/fixed_routes.json';
 import flying_routes from '../../data/jsons/cheapTripData/flying_routes.json';
 import locations from '../../data/jsons/cheapTripData/locations.json';
 import { asyncAutocomplete } from '../../domain/entites/CheapTripSearch/asyncAutocomplete';
-import { SORT_OPTIONS } from '../../domain/entites/utils/constants/sortConstants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter, setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
-import {useMediaQuery} from "@material-ui/core";
-import {resultStyle} from "../components/searchResult/style";
+import {
+  setFilteredRoutes,
+} from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
+import { useMediaQuery } from '@material-ui/core';
+import { resultStyle } from '../components/searchResult/style';
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
@@ -19,39 +20,36 @@ const useCheapTripSearch = () => {
   const [asyncToOptions, setAsyncToOptions] = useState([]);
   const [geoLocation, setGeoLocation] = useState({ latitude: 0, longitude: 0 });
   const [selectedRoutesKeys, setSelectedRoutesKeys] = useState(null);
-  const [inputValueFrom, setInputValueFrom] = useState('');
-  const [inputValueTo, setInputValueTo] = useState('');
+  const [routesForRender, setRoutesForRender] = useState({});
   const { filterBy, filteredRoutes } = useSelector((state) => {
     return state.cheapTripSearch;
   });
   const dispatch = useDispatch();
 
   const style = useMediaQuery('(max-width:650px)')
-      ? resultStyle.sm
-      : resultStyle.lg;
+    ? resultStyle.sm
+    : resultStyle.lg;
 
   const PAGINATION_LIMIT = 10;
   const routes = { ...flying_routes, ...fixed_routes, ...common_routes };
 
   // Here the routes with a common key will merge into an array like: 89091: [{...}, {...}]
-  const routesForRender = {};
-  for (const key in flying_routes) {
-    routesForRender[key] = [flying_routes[key]];
-  }
-  for (const key in fixed_routes) {
-    if (routesForRender[key]) {
-      routesForRender[key].push(fixed_routes[key]);
-    } else {
-      routesForRender[key] = fixed_routes[key] ? [fixed_routes[key]] : [];
+  useEffect(() => {
+    const processedRoutes = {};
+    for (const key in flying_routes) {
+      processedRoutes[key] = [flying_routes[key]];
     }
-  }
-  for (const key in common_routes) {
-    if (routesForRender[key]) {
-      routesForRender[key].push(common_routes[key]);
-    } else {
-      routesForRender[key] = common_routes[key] ? [common_routes[key]] : [];
+
+    for (const key in fixed_routes) {
+      processedRoutes[key] = processedRoutes[key] || [];
+      processedRoutes[key].push(fixed_routes[key]);
     }
-  }
+    for (const key in common_routes) {
+      processedRoutes[key] = processedRoutes[key] || [];
+      processedRoutes[key].push(common_routes[key]);
+    }
+    setRoutesForRender(processedRoutes);
+  }, [flying_routes, common_routes, fixed_routes]);
 
   const locationsKeysSorted = (function () {
     if (!locations) return;
@@ -63,12 +61,10 @@ const useCheapTripSearch = () => {
 
   const clearFromField = () => {
     setFrom('');
-    setInputValueFrom('');
     setFromKey('');
   };
   const clearToField = () => {
     setTo('');
-    setInputValueTo('');
     setToKey('');
   };
 
@@ -79,13 +75,18 @@ const useCheapTripSearch = () => {
           key: key,
         }))
         .sort((a, b) => {
-          if (
-            a.label.toLowerCase().startsWith(inputValueFrom.toLowerCase()) &&
-            !b.label.toLowerCase().startsWith(inputValueFrom.toLowerCase())
-          )
+          const aName = a.label.toUpperCase();
+          const bName = b.label.toUpperCase();
+          if (aName < bName) {
             return -1;
+          }
+          if (aName > bName) {
+            return 1;
+          }
+          return 0;
         })
     : [];
+
   const toOptions = locationsKeysSorted
     ? [
         { label: 'Anywhere', key: '0' },
@@ -95,11 +96,15 @@ const useCheapTripSearch = () => {
             key: key,
           }))
           .sort((a, b) => {
-            if (
-              a.label.toLowerCase().startsWith(inputValueTo.toLowerCase()) &&
-              !b.label.toLowerCase().startsWith(inputValueTo.toLowerCase())
-            )
+            const aName = a.label.toUpperCase();
+            const bName = b.label.toUpperCase();
+            if (aName < bName) {
               return -1;
+            }
+            if (aName > bName) {
+              return 1;
+            }
+            return 0;
           }),
       ]
     : [];
@@ -110,8 +115,6 @@ const useCheapTripSearch = () => {
     setFromKey('');
     setToKey('');
     setSelectedRoutesKeys(null);
-    setInputFrom('');
-    setInputValueTo('');
   };
   const submit = () => {
     if (from === '') return;
@@ -128,34 +131,16 @@ const useCheapTripSearch = () => {
       const filteredByTo = filteredByFrom.filter(
         (key) => routes[key].to === +toKey
       );
-      const sortedByPrice = filteredByTo.sort(
-        (a, b) => routes[a].price - routes[b].price
-      );
+      const sortedByPrice = sortByPrice([...filteredByTo]);
       setSelectedRoutesKeys(sortedByPrice);
     }
-    dispatch(setFilter(SORT_OPTIONS[0]));
   };
 
   useEffect(() => {
     if (selectedRoutesKeys) {
-      let sortedRoutes = [];
-      switch (filterBy) {
-        case SORT_OPTIONS[0]:
-          sortedRoutes = sortByPrice([...selectedRoutesKeys]);
-          break;
-        case SORT_OPTIONS[1]:
-          sortedRoutes = sortByDuration([...selectedRoutesKeys]);
-          break;
-        case SORT_OPTIONS[2]:
-          sortedRoutes = sortByLayovers([...selectedRoutesKeys]);
-          break;
-        default:
-          return;
-      }
-
-      dispatch(setFilteredRoutes(sortedRoutes));
+      dispatch(setFilteredRoutes(selectedRoutesKeys));
     }
-  }, [filterBy, selectedRoutesKeys]);
+  }, [selectedRoutesKeys]);
 
   // const startAsyncAutocomplete = (e, setState, options) => {
   //   // get geolocation
@@ -183,31 +168,9 @@ const useCheapTripSearch = () => {
     setToKey(value.key);
   };
 
-  const sortByDuration = (arr) => {
-    const allRoutes = [].concat(...arr.map((key) => routesForRender[key]));
-    return allRoutes.sort(
-      (route1, route2) => route1.duration - route2.duration
-    );
-  };
-
   const sortByPrice = (arr) => {
     const allRoutes = [].concat(...arr.map((key) => routesForRender[key]));
     return allRoutes.sort((route1, route2) => route1.price - route2.price);
-  };
-
-  const sortByLayovers = (arr) => {
-    const allRoutes = [].concat(...arr.map((key) => routesForRender[key]));
-    return allRoutes.sort(
-      (route1, route2) =>
-        route1.direct_routes.length - route2.direct_routes.length
-    );
-  };
-
-  const setInputFrom = (value) => {
-    setInputValueFrom(value);
-  };
-  const setInputTo = (value) => {
-    setInputValueTo(value);
   };
 
   return {
@@ -222,15 +185,10 @@ const useCheapTripSearch = () => {
     routes,
     filteredRoutes,
     PAGINATION_LIMIT,
-    sortByDuration,
     sortByPrice,
     filterBy,
     clearFromField,
     clearToField,
-    inputValueFrom,
-    inputValueTo,
-    setInputFrom,
-    setInputTo,
     style,
   };
 };

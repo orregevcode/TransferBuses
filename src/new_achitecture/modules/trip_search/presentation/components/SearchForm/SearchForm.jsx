@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Button } from '@material-ui/core';
 import useCheapTripSearch from '../../hooks/useCheapTripSearch';
 import s from './../../../domain/entites/CheapTripSearch/cheaptrip.module.css';
 import classes from './../../../presentation/components/searchResult/SearchComponent.module.css';
 import i18n from './../../../domain/entites/utils/language/i18n';
-import ClearIcon from '@material-ui/icons/Clear';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import AutocompleteEl from './AutocompleteEl/AutocompleteEl';
-import { inputFromStyle, inputToStyle, basicColor } from './searchFormStyles';
+import { inputFromStyle, inputToStyle } from './searchFormStyles';
 
-const SearchForm = () => {
+const SearchForm = memo(() => {
   const {
     from,
     selectFrom,
@@ -21,10 +20,6 @@ const SearchForm = () => {
     submit,
     clearFromField,
     clearToField,
-    inputValueFrom,
-    inputValueTo,
-    setInputFrom,
-    setInputTo,
   } = useCheapTripSearch();
 
   const handleSelectFrom = (value) => {
@@ -45,12 +40,6 @@ const SearchForm = () => {
     submit();
   };
 
-  const handleFromInputValue = (value) => {
-    setInputFrom(value);
-  };
-  const handleToInputValue = (value) => {
-    setInputTo(value);
-  };
 
   return (
     <>
@@ -59,17 +48,11 @@ const SearchForm = () => {
           <AutocompleteEl
             value={from || null}
             handleChange={handleSelectFrom}
-            handleInputChange={handleFromInputValue}
-            inputValue={inputValueFrom}
             options={checkFromOption}
             textFieldLabel={'From'}
             inputStyle={inputFromStyle}
-          />
-          <ClearIcon
-            style={basicColor}
-            onClick={() => {
-              handleClearInput('from');
-            }}
+            handleClearInput={handleClearInput}
+            handleClearInputValue={'from'}
           />
         </div>
         <DoubleArrowIcon className={classes.media_icon} />
@@ -77,17 +60,11 @@ const SearchForm = () => {
           <AutocompleteEl
             value={to || null}
             handleChange={handleSelectTo}
-            handleInputChange={handleToInputValue}
-            inputValue={inputValueTo}
             options={checkToOption}
             textFieldLabel={'To'}
             inputStyle={inputToStyle}
-          />
-          <ClearIcon
-            style={basicColor}
-            onClick={() => {
-              handleClearInput('to');
-            }}
+            handleClearInput={handleClearInput}
+            handleClearInputValue={'to'}
           />
         </div>
       </form>
@@ -100,7 +77,8 @@ const SearchForm = () => {
           disableElevation // disable shade
           style={{ width: '110px', textTransform: 'none' }}
         >
-          {i18n.t('Clear form')}
+          {/* {i18n.t('Clear form')} */}
+          Clear form
         </Button>
         <Button
           variant='contained'
@@ -111,11 +89,12 @@ const SearchForm = () => {
           disableElevation
           disabled={to === '' || from === ''}
         >
-          {i18n.t("Let's go")}
+          {/* {i18n.t("Let's go")} */}
+          Let's go
         </Button>
       </div>
     </>
   );
-};
+});
 
 export default SearchForm;
