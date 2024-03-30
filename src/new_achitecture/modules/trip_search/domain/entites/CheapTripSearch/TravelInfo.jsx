@@ -9,18 +9,22 @@ import {BOOKING_AFFILIATE, BUY_TICKET_AFFILIATE, HOSTEL_WORLD_AFFILIATE} from '.
 
 
 
-function TravelInfo({ travelInfo, price }) {
+function TravelInfo({ travelInfo, timeTravel }) {
   const {
     style,
     lessThan480,
     additionalInfoOpened,
     additionalInformation,
-    setAddInfoOpen,
+    setAddInfoOpen
   } = useTravelInfo(travelInfo);
 
   const handleOpenInfo = () => {
     setAddInfoOpen();
   };
+
+  const priceOutput = (price) => {
+    return '€ ' + price + '.00'
+  }
 
   return (
     <div>
@@ -30,14 +34,14 @@ function TravelInfo({ travelInfo, price }) {
               <Box style={style.directions}>
               <Typography style={style.boldText}>
                 {locations[travelInfo.from] && (
-                    <span>{locations[travelInfo.from].name}</span>
+                    <span style={{padding: '0 2px'}}>{locations[travelInfo.from].name}</span>
                 )}
                 <ArrowForwardIcon
                     fontSize='small'
-                    sx={{verticalAlign: 'text-bottom'}}
+                    sx={style.arrowStyle}
                 />
                 {locations[travelInfo.to] && (
-                    <span>{locations[travelInfo.to].name}</span>
+                    <span style={{padding: '0 2px'}}>{locations[travelInfo.to].name}</span>
                 )}
               </Typography>
               {/*{defineIconOfTransport(data.transportation_type)}*/}
@@ -45,78 +49,65 @@ function TravelInfo({ travelInfo, price }) {
               </Box>
             <Box style={style.directions}>
               <Typography sx={{ color: 'rgb(119, 87, 80)' }}>
-                {`${Math.floor(travelInfo.duration / 60)}h ${
-                  travelInfo.duration % 60
-                }m`}
+                {timeTravel(travelInfo.duration)}
               </Typography>
               <Box
-                sx={
-                  lessThan480
-                    ? {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                      }
-                    : {}
-                }
+                  sx={
+                    lessThan480
+                        ? {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                        }
+                        : {}
+                  }
+                  style={style.btnByTicket}
               >
-                {/*{defineTypeOfTransport(data.transportation_type)}*/}
                 <Link
-                  href={BOOKING_AFFILIATE}
-                  target='_blank'
-                  rel='noreferrer'
+                    href={BOOKING_AFFILIATE}
+                    target='_blank'
+                    rel='noreferrer'
                 >
                   <Button
-                    variant='outlined'
-                    style={style.buyTicket}
-                    type='button'
+                      variant='outlined'
+                      style={style.buyTicket}
+                      type='button'
                   >
                     Booking.com
                   </Button>
                 </Link>
-                 <Link
-                     href={BUY_TICKET_AFFILIATE}
-                     target='_blank'
-                     rel='noreferrer'
-                 >
-                   <Button
-                       variant='outlined'
-                       style={style.buyTicket}
-                       type='button'
-                   >
-                     Buy ticket
-                   </Button>
-                </Link>
                 <Link
-                  href={HOSTEL_WORLD_AFFILIATE}
-                  target='_blank'
-                  rel='noreferrer'
+                    href={BUY_TICKET_AFFILIATE}
+                    target='_blank'
+                    rel='noreferrer'
                 >
                   <Button
-                    variant='outlined'
-                    style={style.buyTicket}
-                    type='button'
+                      variant='outlined'
+                      style={{...style.buyTicket, fontWeight: 800}}
+                      type='button'
+                  >
+                    Buy ticket
+                  </Button>
+                </Link>
+                <Link
+                    href={HOSTEL_WORLD_AFFILIATE}
+                    target='_blank'
+                    rel='noreferrer'
+                >
+                  <Button
+                      variant='outlined'
+                      style={style.buyTicket}
+                      type='button'
                   >
                     Hostelworld
                   </Button>
                 </Link>
               </Box>
               <Typography style={style.price}>
-                {price}
+                {priceOutput(travelInfo.price)}
               </Typography>
             </Box>
           </Box>
-
-          {/*<h4>Travel info: </h4>*/}
-          {/*<p>id: {travelInfo.id}</p>*/}
-          {/*{locations[travelInfo.from] &&*/}
-          {/*    <p>from: {locations[travelInfo.from].name + ', ' + locations[travelInfo.from].country_name}</p>}*/}
-          {/*{locations[travelInfo.to] &&*/}
-          {/*    <p>to: {locations[travelInfo.to].name + ', ' + locations[travelInfo.to].country_name}</p>}*/}
-          {/*{transport[travelInfo.transport] &&*/}
-          {/*    <p>transport: {transport[travelInfo.transport].name}</p>}*/}
-          {/*<p>price: {travelInfo.price} euro</p>*/}
-          {/*<p>time: {travelInfo.duration} minutes</p>*/}
 
           {additionalInformation && additionalInfoOpened && (
             <Modal

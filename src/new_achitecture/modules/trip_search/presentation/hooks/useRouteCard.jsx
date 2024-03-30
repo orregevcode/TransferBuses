@@ -47,7 +47,7 @@ const useRouteCard = (route) => {
   //   console.log(travelInfo);
   // }, [travelInfo]);
 
-  return { style, timeTravel, priceTravel, travelInfo };
+  return { style, timeTravel, priceTravel, travelInfo, calculateTravelTime };
 };
 
 export default useRouteCard;
