@@ -20,6 +20,7 @@ function RouteCard({ route }) {
       {locations ? (
         <>
           <div style={style.routeCard}>
+            {/*div*/}
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
