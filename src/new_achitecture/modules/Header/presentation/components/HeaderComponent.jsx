@@ -93,21 +93,26 @@ const Header = () => {
                     >
                         <MenuList>
                             <MenuItem className={css.burgerText} button key={CONTACTS_ROUTE}>
-                                <ContactMailIcon style={{marginRight: "5px", width: "1.1rem", height: "1.1rem"}}/>
                                 <ListItemText
-                                    primary={"Contacts"}
-                                    onClick={() => closeHandler(CONTACTS_ROUTE)}
+                                    primary={"Cheap Trip"}
+                                    onClick={() => closeHandler(MAIN_ROUTE)}
                                 />
                             </MenuItem>
+                            <MenuItem className={css.burgerText} button key={TRAVEL_TIPS}><ListItemText
+                                primary={"Travel Tips"}
+                                onClick={() => closeHandler(TRAVEL_TIPS)}
+                            /></MenuItem>
                             <MenuItem className={css.burgerText} button key={PASSENGER_ROUTE}>
                                 <ListItemText
                                     primary={"Transfer Buses"}
                                     onClick={() => closeHandler(PASSENGER_ROUTE)}
                                 /></MenuItem>
-                            <MenuItem className={css.burgerText} button key={TRAVEL_TIPS}><ListItemText
-                                primary={"Travel Tips"}
-                                onClick={() => closeHandler(TRAVEL_TIPS)}
-                            /></MenuItem>
+                            <MenuItem className={css.burgerText} button key={CONTACTS_ROUTE}>
+                                <ListItemText
+                                    primary={"Contacts"}
+                                    onClick={() => closeHandler(CONTACTS_ROUTE)}
+                                />
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
