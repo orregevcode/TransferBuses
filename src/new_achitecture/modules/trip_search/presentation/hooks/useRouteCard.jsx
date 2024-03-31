@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { resultStyle } from '../components/searchResult/style';
 import { useMediaQuery } from '@material-ui/core';
 import directRoutes from '../../data/jsons/cheapTripData/direct_routes.json';
@@ -40,7 +40,7 @@ const useRouteCard = (route) => {
     setTravelInfo(temp);
   }, [directRoutes, route]);
 
-  return { style, timeTravel, priceTravel, travelInfo };
+  return { style, timeTravel, priceTravel, travelInfo, calculateTravelTime };
 };
 
 export default useRouteCard;

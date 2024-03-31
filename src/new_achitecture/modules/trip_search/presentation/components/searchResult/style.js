@@ -23,7 +23,7 @@ const resultStyle = {
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
-      width: '100%',
+      width: '99%',
       marginRight: 13,
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -67,6 +67,26 @@ const resultStyle = {
     },
     sortMenu: {
       paddingLeft: '24px'
+    },
+    airplaneBox:{
+      padding: '0 2,5px'
+    },
+    airplaneIcon:{
+      fontSize: 24,
+      color: '#607D8B'
+    },
+    routeCard: {
+      marginTop: '20px',
+    },
+    italicFont:{
+      fontStyle: 'italic',
+      padding: '0 2px'
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
+    },
+    btnByTicket: {
     },
   },
   sm: {
@@ -137,12 +157,32 @@ const resultStyle = {
     sortMenu: {
       paddingLeft: '24px'
     },
+    airplaneBox:{
+      padding: '0 2,5px'
+    },
+    airplaneIcon:{
+      fontSize: 24,
+      color: '#607D8B'
+    },
+    routeCard: {
+      marginTop: '20px',
+    },
+    italicFont:{
+      fontStyle: 'italic',
+      padding: '0 2px'
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
+    },
+    btnByTicket: {
+    },
   },
 };
 const resultItemStyle = {
   lg: {
     itemContainer: {
-      width: "100%",
+      width: "97%",
       backgroundColor: "rgb(255, 251, 255)",
       borderTopWidth: 0,
       borderWidth: 1,
@@ -156,7 +196,8 @@ const resultItemStyle = {
       flexDirection: "row",
       justifyContent: "space-between",
       width: "100%",
-      padding: 5,
+      padding: 3,
+      paddingTop: 3,
     },
     boldText: {
       fontWeight: "bold",
@@ -165,12 +206,12 @@ const resultItemStyle = {
       borderWidth: 1,
       borderRadius: "2",
       borderColor: "#ff6721",
-      fontSize: "10px",
+      fontSize: "12px",
       padding: "13px 7px",
       margin: "0 2px",
       color: "rgb(10,4,3)",
-      fontWeight: "bold",
-
+      fontWeight: 500,
+      textTransform: 'capitalize',
     },
     price: {
       color: "rgb(10,4,3)",
@@ -193,6 +234,10 @@ const resultItemStyle = {
     },
     iconText: {
       textAlign: 'right',
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
     },
   },
   sm: {
@@ -226,7 +271,7 @@ const resultItemStyle = {
       padding: "15px 7px",
       margin: "0 2px",
       color: "rgb(10,4,3)",
-
+      textTransform: 'capitalize'
     },
     price: {
       color: "rgb(10,4,3)",
@@ -256,7 +301,11 @@ const resultItemStyle = {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
-    }
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
+    },
   },
 };
 export { resultStyle, resultItemStyle };
