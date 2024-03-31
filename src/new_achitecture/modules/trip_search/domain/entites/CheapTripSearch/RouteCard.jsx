@@ -12,7 +12,7 @@ import useRouteCard from '../../../presentation/hooks/useRouteCard';
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
-  const { style, timeTravel, priceTravel, travelInfo } = useRouteCard(route);
+  const { style, timeTravel, priceTravel, travelInfo, calculateTravelTime } = useRouteCard(route);
   const price = priceTravel + '.00';
 
   setIsSearchListIsOpen(true);
@@ -21,7 +21,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
     <>
       {locations ? (
         <>
-          <div style={{ marginTop: '20px', padding: '0 24px'}}>
+          <div style={style.routeCard}>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -31,9 +31,9 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 {travelInfo &&
                     travelInfo.length !== 0 &&
                     <Box style={style.transportIcons}>
-                      {travelInfo.map(() => (
-                      <Box style={{padding: '0 2,5px'}}>
-                        <AirplanemodeActiveIcon sx={{ fontSize: 24, color: '#607D8B'}}  />
+                      {travelInfo.map((item, index) => (
+                      <Box style={style.airplaneBox} key={index}>
+                        <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
                       </Box>
                       ))}
                     </Box>}
@@ -43,17 +43,17 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                         <React.Fragment key={travelInformation.to}>
                           {index !== 0 && <ArrowForwardIcon
                               fontSize='small'
-                              sx={{ verticalAlign: 'text-bottom' }}
+                              sx={style.arrowStyle}
                           />}
-                          <span style={{fontStyle: 'italic'}}>{locations[travelInformation.from].name}</span>
+                          <span style={style.italicFont}>{locations[travelInformation.from].name}</span>
                         </React.Fragment>
                     ))}
                     <ArrowForwardIcon
                         fontSize='small'
-                        sx={{ verticalAlign: 'text-bottom' }}
+                        sx={style.arrowStyle}
                     />
                     {locations[route.to] && (
-                        <span style={{fontStyle: 'italic'}}>{locations[route.to].name}</span>
+                        <span style={style.italicFont}>{locations[route.to].name}</span>
                     )}
                   </Typography>
                   <Box style={style.bottomContainer}>
@@ -72,28 +72,14 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                       <TravelInfo
                         travelInfo={travelInformation}
                         key={travelInformation.to}
-                        price={price}
+                        price={priceTravel}
+                        timeTravel={calculateTravelTime}
                       />
                     ))}
                 </div>
               </AccordionDetails>
             </Accordion>
           </div>
-
-          {/*<h3>Route info: </h3>*/}
-          {/*<p>{route.price} euro</p>*/}
-          {/*{locations[route.from]*/}
-          {/*    && <p>from: {locations[route.from].name + ', ' + locations[route.from].country_name}</p>}*/}
-          {/*{locations[route.to]*/}
-          {/*    && <p>to: {locations[route.to].name + ', ' + locations[route.to].country_name}</p>}*/}
-          {/*/!*<p>id: {route.id}</p>*!/*/}
-          {/*<p>duration: {route.trip_duration}</p>*/}
-          {/*<div>*/}
-          {/*    {travelInfo && travelInfo.length !== 0*/}
-          {/*        && travelInfo.map(travelInfo => (*/}
-          {/*            <TravelInfo travelInfo={travelInfo} key={travelInfo.to}/>*/}
-          {/*        ))}*/}
-          {/*</div>*/}
         </>
       ) : (
         <h3>Loading...</h3>
