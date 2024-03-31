@@ -7,24 +7,21 @@ const useRouteCard = (route) => {
   const style = useMediaQuery('(max-width:650px)')
     ? resultStyle.sm
     : resultStyle.lg;
-
   const calculateTravelTime = (duration) => {
-    const days = Math.floor(duration / (24 * 60))
-    const hours = Math.floor((duration % (24 * 60)) / 60)
-    const minutes = duration % 60
+    const days = Math.floor(duration / (24 * 60));
+    const hours = Math.floor((duration % (24 * 60)) / 60);
+    const minutes = duration % 60;
 
-    let displayTime = ''
+    let displayTime = '';
 
-    if(days > 0)
-      displayTime += `${days}d`
-    if(hours > 0)
-      displayTime += ` ${hours}h`
-    displayTime += ` ${minutes}min`
+    if (days > 0) displayTime += `${days}d`;
+    if (hours > 0) displayTime += ` ${hours}h`;
+    displayTime += ` ${minutes}min`;
 
-    return displayTime
-  }
+    return displayTime;
+  };
 
-  const timeTravel = calculateTravelTime(route.duration)
+  const timeTravel = calculateTravelTime(route.duration);
 
   const priceTravel = `€ ${route.price}`;
 
@@ -42,10 +39,6 @@ const useRouteCard = (route) => {
     });
     setTravelInfo(temp);
   }, [directRoutes, route]);
-
-  // useEffect(() => {
-  //   console.log(travelInfo);
-  // }, [travelInfo]);
 
   return { style, timeTravel, priceTravel, travelInfo, calculateTravelTime };
 };
