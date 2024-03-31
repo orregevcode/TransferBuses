@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { resultStyle } from '../components/searchResult/style';
 import { useMediaQuery } from '@material-ui/core';
 import directRoutes from '../../data/jsons/cheapTripData/direct_routes.json';
@@ -7,10 +7,21 @@ const useRouteCard = (route) => {
   const style = useMediaQuery('(max-width:650px)')
     ? resultStyle.sm
     : resultStyle.lg;
+  const calculateTravelTime = (duration) => {
+    const days = Math.floor(duration / (24 * 60));
+    const hours = Math.floor((duration % (24 * 60)) / 60);
+    const minutes = duration % 60;
 
-  const timeTravel = `${Math.floor(route.duration / 60)}h ${
-    route.duration % 60
-  }m`;
+    let displayTime = '';
+
+    if (days > 0) displayTime += `${days}d`;
+    if (hours > 0) displayTime += ` ${hours}h`;
+    displayTime += ` ${minutes}min`;
+
+    return displayTime;
+  };
+
+  const timeTravel = calculateTravelTime(route.duration);
 
   const priceTravel = `€ ${route.price}`;
 
@@ -29,11 +40,7 @@ const useRouteCard = (route) => {
     setTravelInfo(temp);
   }, [directRoutes, route]);
 
-  // useEffect(() => {
-  //   console.log(travelInfo);
-  // }, [travelInfo]);
-
-  return { style, timeTravel, priceTravel, travelInfo };
+  return { style, timeTravel, priceTravel, travelInfo, calculateTravelTime };
 };
 
 export default useRouteCard;

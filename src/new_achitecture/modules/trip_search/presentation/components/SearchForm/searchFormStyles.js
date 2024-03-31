@@ -5,7 +5,7 @@ export let inputToStyle = {
   color: 'rgb(118, 118, 118)',
 };
 
-export let basicColor = { color: 'rgb(118, 118, 118)' };
+export let clearIconStyles = { color: 'rgb(118, 118, 118)', cursor: 'pointer' };
 
 export let colorOnFocus = { color: '#ff5722' };
 

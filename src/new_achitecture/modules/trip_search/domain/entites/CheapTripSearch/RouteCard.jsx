@@ -9,40 +9,57 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
+import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
-function RouteCard({ route }) {
-  const { style, timeTravel, priceTravel, travelInfo } = useRouteCard(route);
+function RouteCard({ route, setIsSearchListIsOpen }) {
+  const { style, timeTravel, priceTravel, travelInfo, calculateTravelTime } = useRouteCard(route);
+  const price = priceTravel + '.00';
+
+  setIsSearchListIsOpen(true);
+
   return (
     <>
       {locations ? (
         <>
-          <div style={{ marginTop: '20px' }}>
+          <div style={style.routeCard}>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls='panel1a-content'
                 id='panel1a-header'
               >
+                {travelInfo &&
+                    travelInfo.length !== 0 &&
+                    <Box style={style.transportIcons}>
+                      {travelInfo.map((item, index) => (
+                      <Box style={style.airplaneBox} key={index}>
+                        <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
+                      </Box>
+                      ))}
+                    </Box>}
                 <Box style={style.box}>
-                  <Box style={style.inline}>
-                    {/*{defineIconOfTransport(data.transportation_type)}*/}
-                  </Box>
                   <Typography>
-                    {locations[route.from] && (
-                      <span>{locations[route.from].name}</span>
-                    )}
+                    {travelInfo && travelInfo.length !== 0 && travelInfo.map((travelInformation, index) => (
+                        <React.Fragment key={travelInformation.to}>
+                          {index !== 0 && <ArrowForwardIcon
+                              fontSize='small'
+                              sx={style.arrowStyle}
+                          />}
+                          <span style={style.italicFont}>{locations[travelInformation.from].name}</span>
+                        </React.Fragment>
+                    ))}
                     <ArrowForwardIcon
-                      fontSize='small'
-                      sx={{ verticalAlign: 'text-bottom' }}
+                        fontSize='small'
+                        sx={style.arrowStyle}
                     />
                     {locations[route.to] && (
-                      <span>{locations[route.to].name}</span>
+                        <span style={style.italicFont}>{locations[route.to].name}</span>
                     )}
                   </Typography>
                   <Box style={style.bottomContainer}>
                     <Typography style={style.time}>{timeTravel}</Typography>
                     <Box style={style.priceContainer}>
-                      <Typography style={style.price}>{priceTravel}</Typography>
+                      <Typography style={style.price}>{price}</Typography>
                     </Box>
                   </Box>
                 </Box>
@@ -55,27 +72,14 @@ function RouteCard({ route }) {
                       <TravelInfo
                         travelInfo={travelInformation}
                         key={travelInformation.to}
+                        price={priceTravel}
+                        timeTravel={calculateTravelTime}
                       />
                     ))}
                 </div>
               </AccordionDetails>
             </Accordion>
           </div>
-
-          {/*<h3>Route info: </h3>*/}
-          {/*<p>{route.price} euro</p>*/}
-          {/*{locations[route.from]*/}
-          {/*    && <p>from: {locations[route.from].name + ', ' + locations[route.from].country_name}</p>}*/}
-          {/*{locations[route.to]*/}
-          {/*    && <p>to: {locations[route.to].name + ', ' + locations[route.to].country_name}</p>}*/}
-          {/*/!*<p>id: {route.id}</p>*!/*/}
-          {/*<p>duration: {route.trip_duration}</p>*/}
-          {/*<div>*/}
-          {/*    {travelInfo && travelInfo.length !== 0*/}
-          {/*        && travelInfo.map(travelInfo => (*/}
-          {/*            <TravelInfo travelInfo={travelInfo} key={travelInfo.to}/>*/}
-          {/*        ))}*/}
-          {/*</div>*/}
         </>
       ) : (
         <h3>Loading...</h3>

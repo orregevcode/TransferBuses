@@ -6,13 +6,14 @@ const resultStyle = {
       paddingBottom: 2.5,
       marginLeft: 5,
       color: "#607d8b",
-      alignItems: "baseline",
+      alignItems: "right",
+
     },
     box: {
       display: 'flex',
       flexDirection: 'column',
       flex: 1,
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       marginTop: 10,
       borderRadius: 5,
       borderColor: "grey",
@@ -22,7 +23,8 @@ const resultStyle = {
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
-      width: '85%',
+      width: '99%',
+      marginRight: 13,
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingHorizontal: 4,
@@ -56,6 +58,36 @@ const resultStyle = {
       verticalAlign: "text-bottom",
       margin: "0 2px",
     },
+    transportIcons: {
+      width: '70px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    sortMenu: {
+      paddingLeft: '24px'
+    },
+    airplaneBox:{
+      padding: '0 2,5px'
+    },
+    airplaneIcon:{
+      fontSize: 24,
+      color: '#607D8B'
+    },
+    routeCard: {
+      marginTop: '20px',
+    },
+    italicFont:{
+      fontStyle: 'italic',
+      padding: '0 2px'
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
+    },
+    btnByTicket: {
+    },
   },
   sm: {
     inline: {
@@ -70,7 +102,7 @@ const resultStyle = {
       display: 'flex',
       flexDirection: 'column',
       flex: 1,
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       marginTop: 8,
       borderRadius: 5,
       borderColor: "grey",
@@ -80,7 +112,8 @@ const resultStyle = {
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
-      width: '85%',
+      width: '100%',
+      marginRight: 13,
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingHorizontal: 4,
@@ -114,12 +147,42 @@ const resultStyle = {
       verticalAlign: "text-top",
       margin: 0,
     },
+    transportIcons: {
+      width: '70px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    sortMenu: {
+      paddingLeft: '24px'
+    },
+    airplaneBox:{
+      padding: '0 2,5px'
+    },
+    airplaneIcon:{
+      fontSize: 24,
+      color: '#607D8B'
+    },
+    routeCard: {
+      marginTop: '20px',
+    },
+    italicFont:{
+      fontStyle: 'italic',
+      padding: '0 2px'
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
+    },
+    btnByTicket: {
+    },
   },
 };
 const resultItemStyle = {
   lg: {
     itemContainer: {
-      width: "100%",
+      width: "97%",
       backgroundColor: "rgb(255, 251, 255)",
       borderTopWidth: 0,
       borderWidth: 1,
@@ -133,21 +196,25 @@ const resultItemStyle = {
       flexDirection: "row",
       justifyContent: "space-between",
       width: "100%",
-      padding: 5,
+      padding: 3,
+      paddingTop: 3,
     },
     boldText: {
       fontWeight: "bold",
     },
     buyTicket: {
       borderWidth: 1,
-      borderColor: "rgb(177, 44, 22)",
+      borderRadius: "2",
+      borderColor: "#ff6721",
       fontSize: "12px",
-      padding: "0 7px",
-      margin: "0 5px",
-      color: "rgb(177, 44, 22)",
+      padding: "13px 7px",
+      margin: "0 2px",
+      color: "rgb(10,4,3)",
+      fontWeight: 500,
+      textTransform: 'capitalize',
     },
     price: {
-      color: "rgb(177, 44, 22)",
+      color: "rgb(10,4,3)",
     },
     icon: {
       color: "#607d8b",
@@ -167,6 +234,10 @@ const resultItemStyle = {
     },
     iconText: {
       textAlign: 'right',
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
     },
   },
   sm: {
@@ -194,15 +265,16 @@ const resultItemStyle = {
     },
     buyTicket: {
       borderWidth: 1,
-      borderColor: "rgb(177, 44, 22)",
+      borderColor: "#ff6721",
       fontSize: "10px",
-      padding: "0 5px",
+      fontWeight: "bold",
+      padding: "15px 7px",
       margin: "0 2px",
-      color: "rgb(177, 44, 22)",
+      color: "rgb(10,4,3)",
+      textTransform: 'capitalize'
     },
     price: {
-      color: "rgb(177, 44, 22)",
-      fontSize: "0.8rem",
+      color: "rgb(10,4,3)",
     },
     icon: {
       color: "#607d8b",
@@ -224,6 +296,15 @@ const resultItemStyle = {
     iconText: {
       fontSize: "0.8rem",
       textAlign: 'right',
+    },
+    inLine: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    arrowStyle: {
+      verticalAlign: 'text-bottom',
+      padding: '0 2px',
     },
   },
 };
