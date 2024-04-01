@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import locations from '../..//../data/jsons/cheapTripData/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
@@ -15,7 +15,11 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
   const { style, timeTravel, priceTravel, travelInfo, calculateTravelTime } = useRouteCard(route);
   const price = priceTravel + '.00';
 
-  setIsSearchListIsOpen(true);
+  useEffect(() => {
+    if (setIsSearchListIsOpen) {
+      setIsSearchListIsOpen(true);
+    }
+  }, [])
 
   return (
     <>
