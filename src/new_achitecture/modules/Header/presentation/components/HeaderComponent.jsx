@@ -62,7 +62,7 @@ const Header = () => {
                         edge='end'
                         className={css.menuButton}
                     >
-                        Transfer Buses
+                        TransferBuses
                     </Link>
                     <Link
                         to={TRAVEL_TIPS}
@@ -104,7 +104,7 @@ const Header = () => {
                             /></MenuItem>
                             <MenuItem className={css.burgerText} button key={PASSENGER_ROUTE}>
                                 <ListItemText
-                                    primary={"Transfer Buses"}
+                                    primary={"TransferBuses"}
                                     onClick={() => closeHandler(PASSENGER_ROUTE)}
                                 /></MenuItem>
                             <MenuItem className={css.burgerText} button key={CONTACTS_ROUTE}>
