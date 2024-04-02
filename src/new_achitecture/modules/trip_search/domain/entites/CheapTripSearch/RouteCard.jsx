@@ -31,14 +31,16 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls='panel1a-content'
                 id='panel1a-header'
+
               >
+                <div style={style.routeContainer}>
                 {travelInfo &&
                     travelInfo.length !== 0 &&
                     <Box style={style.transportIcons}>
                       {travelInfo.map((item, index) => (
-                      <Box style={style.airplaneBox} key={index}>
-                        <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
-                      </Box>
+                          <Box style={style.airplaneBox} key={index}>
+                            <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
+                          </Box>
                       ))}
                     </Box>}
                 <Box style={style.box}>
@@ -49,7 +51,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                               fontSize='small'
                               sx={style.arrowStyle}
                           />}
-                          <span style={style.italicFont}>{locations[travelInformation.from].name}</span>
+                          <span style={style.regularFont}>{locations[travelInformation.from].name}</span>
                         </React.Fragment>
                     ))}
                     <ArrowForwardIcon
@@ -57,16 +59,18 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                         sx={style.arrowStyle}
                     />
                     {locations[route.to] && (
-                        <span style={style.italicFont}>{locations[route.to].name}</span>
+                        <span style={style.regularFont}>{locations[route.to].name}</span>
                     )}
                   </Typography>
                   <Box style={style.bottomContainer}>
-                    <Typography style={style.time}>{timeTravel}</Typography>
                     <Box style={style.priceContainer}>
                       <Typography style={style.price}>{price}</Typography>
                     </Box>
+                    <Typography style={style.time}>{timeTravel}</Typography>
                   </Box>
                 </Box>
+              </div>
+
               </AccordionSummary>
               <AccordionDetails>
                 <div>
