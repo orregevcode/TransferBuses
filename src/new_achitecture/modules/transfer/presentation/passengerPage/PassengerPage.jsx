@@ -11,7 +11,6 @@ import {PAGE_SIZE} from '../../../trip_search/data/api/data-service';
 import FiltersCitiesFrom from '../../../trip_search/lib/filterSearch/Filter/FiltersCitiesFrom';
 import usePassenger from '../hooks/usePassenger';
 import {Link} from "react-router-dom";
-import {useLocation} from "react-router";
 
 function isNewDesign() {
     return (

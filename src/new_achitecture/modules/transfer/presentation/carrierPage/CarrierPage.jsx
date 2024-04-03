@@ -31,7 +31,6 @@ import RegularTripsDaySelection from "./subComponents/RegularTripsDaySelection";
 import RegularTripDayCheckbox from "./subComponents/RegularTripDayCheckbox";
 import RegularTripDayTimeInput from "./subComponents/RegularTripDayTimeInput";
 import AdditionalInfoField from "./subComponents/AdditionalInfoField";
-import {useLocation} from "react-router";
 
 export default function CarrierPage() {
     const {
@@ -61,8 +60,6 @@ export default function CarrierPage() {
     const handleSubmitForm = (values) => {
         submitForm(values);
     };
-
-    const path = useLocation();
 
     return (
         <Container maxWidth='xl' style={{paddingTop: '100px'}}>
