@@ -58,11 +58,11 @@ const resultStyle = {
       margin: '0 2px',
     },
     transportIcons: {
-      width: '70px',
+      //width: '70px',
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      //justifyContent: 'center',
     },
     sortMenu: {
       paddingLeft: '24px',
@@ -88,8 +88,7 @@ const resultStyle = {
     btnByTicket: {},
     routeContainer:{
       display:'flex',
-      flexDirection:'row',
-      alignItems:'center',
+      flexDirection:'column',
       width: '100%'
     },
     regularFont:{
