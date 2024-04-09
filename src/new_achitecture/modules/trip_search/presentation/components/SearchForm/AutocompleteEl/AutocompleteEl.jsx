@@ -9,6 +9,7 @@ import {
   clearIconStyles,
 } from './../searchFormStyles';
 import ClearIcon from '@material-ui/icons/Clear';
+import useCheapTripSearch from '../../../hooks/useCheapTripSearch';
 
 const AutocompleteEl = ({
   value,
@@ -18,6 +19,8 @@ const AutocompleteEl = ({
   inputStyle,
   handleClearInput,
   handleClearInputValue,
+  isClean,
+  handleSetIsClean,
 }) => {
   const filterOptions = createFilterOptions({
     matchFrom: 'start',
@@ -33,6 +36,15 @@ const AutocompleteEl = ({
   useEffect(() => {
     setIsOpen(inputValue.length >= 2 ? true : false);
   }, [inputValue]);
+
+  useEffect(() => {
+    if (isClean && isClean === true) {
+      console.log(`in useEffect autocomplete`);
+      setInputValue('');
+      handleSetIsClean(false);
+    } else
+      return;
+  }, [isClean]);
 
   return (
     <>

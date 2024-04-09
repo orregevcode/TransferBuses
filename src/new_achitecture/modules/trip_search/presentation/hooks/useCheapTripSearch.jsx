@@ -1,26 +1,26 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import common_routes from '../../data/jsons/cheapTripData/routes.json';
-import fixed_routes from '../../data/jsons/cheapTripData/fixed_routes.json';
-import flying_routes from '../../data/jsons/cheapTripData/flying_routes.json';
-import locations from '../../data/jsons/cheapTripData/locations.json';
+// import common_routes from '../../data/jsons/cheapTripData/new_jsons/routes.json';
+// import flying_routes from '../../data/jsons/cheapTripData/new_jsons/flying_routes.json';
+import locations from '../../data/jsons/cheapTripData/new_jsons/locations.json';
 import { asyncAutocomplete } from '../../domain/entites/CheapTripSearch/asyncAutocomplete';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setFilteredRoutes,
-} from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
+import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [fromKey, setFromKey] = useState('');
+  const [fromKey, setFromKey] = useState(null);
   const [toKey, setToKey] = useState('');
   const [asyncFromOptions, setAsyncFromOptions] = useState([]);
   const [asyncToOptions, setAsyncToOptions] = useState([]);
   const [geoLocation, setGeoLocation] = useState({ latitude: 0, longitude: 0 });
   const [selectedRoutesKeys, setSelectedRoutesKeys] = useState(null);
   const [routesForRender, setRoutesForRender] = useState({});
+  const [flyingRoutesByFrom, setFlyingRoutesByFrom] = useState([{}]);
+  const [isClean, setIsClean] = useState(false);
+  const [locationsKeysSorted, setLocationsKeySorted] = useState([]);
   const { filterBy, filteredRoutes } = useSelector((state) => {
     return state.cheapTripSearch;
   });
@@ -31,33 +31,16 @@ const useCheapTripSearch = () => {
     : resultStyle.lg;
 
   const PAGINATION_LIMIT = 10;
-  const routes = { ...flying_routes, ...fixed_routes, ...common_routes };
 
-  // Here the routes with a common key will merge into an array like: 89091: [{...}, {...}]
   useEffect(() => {
-    const processedRoutes = {};
-    for (const key in flying_routes) {
-      processedRoutes[key] = [flying_routes[key]];
-    }
-
-    for (const key in fixed_routes) {
-      processedRoutes[key] = processedRoutes[key] || [];
-      processedRoutes[key].push(fixed_routes[key]);
-    }
-    for (const key in common_routes) {
-      processedRoutes[key] = processedRoutes[key] || [];
-      processedRoutes[key].push(common_routes[key]);
-    }
-    setRoutesForRender(processedRoutes);
-  }, [flying_routes, common_routes, fixed_routes]);
-
-  const locationsKeysSorted = (function () {
-    if (!locations) return;
-    let temp = { ...locations };
-    return Object.keys(temp).sort((a, b) => {
-      return temp[a].name > temp[b].name ? 1 : -1;
+    setLocationsKeySorted((prevState) => {
+      if (!locations) return prevState;
+      let temp = { ...locations };
+      return Object.keys(temp).sort((a, b) => {
+        return temp[a].name > temp[b].name ? 1 : -1;
+      });
     });
-  })();
+  }, [locations]);
 
   const clearFromField = () => {
     setFrom('');
@@ -115,25 +98,52 @@ const useCheapTripSearch = () => {
     setFromKey('');
     setToKey('');
     setSelectedRoutesKeys(null);
+    setIsClean(true);
+    setIsClean(true);
   };
-  const submit = () => {
-    if (from === '') return;
-    let routesKeys = Object.keys(routes);
-    const filteredByFrom = routesKeys.filter(
-      (key) => routes[key].from === +fromKey
-    );
+
+  const getRoutes = async () => {
+    const requestOptions = {
+      method: 'POST',
+      redirect: 'follow',
+    };
+
+    return fetch(`http://localhost:3010/${fromKey}/${toKey}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const submit = async () => {
     if (to === '') {
       setTo('Anywhere');
       setToKey('0');
-    } else if (to === 'Anywhere') {
-      setSelectedRoutesKeys(filteredByFrom);
-    } else {
-      const filteredByTo = filteredByFrom.filter(
-        (key) => routes[key].to === +toKey
-      );
-      const sortedByPrice = sortByPrice([...filteredByTo]);
-      setSelectedRoutesKeys(sortedByPrice);
     }
+    console.log(fromKey + ' ' + toKey);
+    const routes = await getRoutes();
+    const sortedRoutes = sortByPrice(routes['route_data']);
+    setSelectedRoutesKeys(sortedRoutes);
+    // const test = await getPathMap(fromKey, toKey);
+    // console.log(test);
+    //   if (from === '') return;
+    //   // let routesKeys = Object.keys(routes);
+    //   // const filteredByFrom = routesKeys.filter(
+    //   //   (key) => routes[key].from === +fromKey
+    //   // );
+    //   if (to === '') {
+    //     setTo('Anywhere');
+    //     setToKey('0');
+    //   } else if (to === 'Anywhere') {
+    //     setSelectedRoutesKeys(filteredByFrom);
+    //   } else {
+    //     const filteredByTo = filteredByFrom.filter(
+    //       (key) => routes[key].to === +toKey
+    //     );
+    //     const sortedByPrice = sortByPrice([...filteredByTo]);
+    //     setSelectedRoutesKeys(sortedByPrice);
+    //   }
   };
 
   useEffect(() => {
@@ -161,16 +171,24 @@ const useCheapTripSearch = () => {
   const selectFrom = (value) => {
     setFrom(value.label);
     setFromKey(value.key);
+    console.log(value);
   };
 
   const selectTo = (value) => {
     setTo(value.label);
     setToKey(value.key);
+    console.log(value);
   };
 
   const sortByPrice = (arr) => {
-    const allRoutes = [].concat(...arr.map((key) => routesForRender[key]));
-    return allRoutes.sort((route1, route2) => route1.price - route2.price);
+    const allRoutes = [...arr];
+    return allRoutes.sort(
+      (route1, route2) => route1['euro_price'] - route2['euro_price']
+    );
+  };
+  const cleanSearchForm = (value) => {
+    console.log(`in cleanSearchForm: ${value}`);
+    setIsClean(false);
   };
 
   return {
@@ -182,7 +200,7 @@ const useCheapTripSearch = () => {
     checkToOption,
     cleanForm,
     submit,
-    routes,
+    // routes,
     filteredRoutes,
     PAGINATION_LIMIT,
     sortByPrice,
@@ -190,6 +208,8 @@ const useCheapTripSearch = () => {
     clearFromField,
     clearToField,
     style,
+    isClean,
+    cleanSearchForm,
   };
 };
 

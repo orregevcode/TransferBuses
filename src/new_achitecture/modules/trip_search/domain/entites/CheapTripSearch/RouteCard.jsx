@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import locations from '../..//../data/jsons/cheapTripData/locations.json';
+import React, { useEffect } from 'react';
+import locations from '../..//../data/jsons/cheapTripData/new_jsons/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,17 +9,23 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
-import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
-  const { style, timeTravel, priceTravel, travelInfo, calculateTravelTime } = useRouteCard(route);
+  const {
+    style,
+    timeTravel,
+    priceTravel,
+    travelInfo,
+    calculateTravelTime,
+    selectTransportIcon,
+  } = useRouteCard(route);
   const price = priceTravel + '.00';
-
   useEffect(() => {
     if (setIsSearchListIsOpen) {
       setIsSearchListIsOpen(true);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -32,33 +38,36 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 aria-controls='panel1a-content'
                 id='panel1a-header'
               >
-                {travelInfo &&
-                    travelInfo.length !== 0 &&
-                    <Box style={style.transportIcons}>
-                      {travelInfo.map((item, index) => (
+                {travelInfo && travelInfo.length !== 0 && (
+                  <Box style={style.transportIcons}>
+                    {travelInfo.map((item, index) => (
                       <Box style={style.airplaneBox} key={index}>
-                        <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
+                        {selectTransportIcon(item.route['transportation_type'], style.airplaneIcon)}
                       </Box>
-                      ))}
-                    </Box>}
+                    ))}
+                  </Box>
+                )}
                 <Box style={style.box}>
                   <Typography>
-                    {travelInfo && travelInfo.length !== 0 && travelInfo.map((travelInformation, index) => (
-                        <React.Fragment key={travelInformation.to}>
-                          {index !== 0 && <ArrowForwardIcon
+                    {travelInfo &&
+                      travelInfo.length !== 0 &&
+                      travelInfo.map((travelInformation, index) => (
+                        <React.Fragment key={travelInformation.route.from}>
+                          {index !== 0 && (
+                            <ArrowForwardIcon
                               fontSize='small'
                               sx={style.arrowStyle}
-                          />}
-                          <span style={style.italicFont}>{locations[travelInformation.from].name}</span>
+                            />
+                          )}
+                          <span style={style.italicFont}>
+                            {travelInformation.route.from}
+                          </span>
                         </React.Fragment>
-                    ))}
-                    <ArrowForwardIcon
-                        fontSize='small'
-                        sx={style.arrowStyle}
-                    />
-                    {locations[route.to] && (
-                        <span style={style.italicFont}>{locations[route.to].name}</span>
-                    )}
+                      ))}
+                    <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
+                    {route['direct_paths'] &&
+                      route['direct_paths'].length > 0 &&
+                        <span style={style.italicFont}>{route['direct_paths'][route['direct_paths'].length - 1].to}</span>}
                   </Typography>
                   <Box style={style.bottomContainer}>
                     <Typography style={style.time}>{timeTravel}</Typography>
@@ -75,9 +84,13 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     travelInfo.map((travelInformation) => (
                       <TravelInfo
                         travelInfo={travelInformation}
-                        key={travelInformation.to}
-                        price={priceTravel}
-                        timeTravel={calculateTravelTime}
+                        key={travelInformation.route.to}
+                        price={price}
+                        timeTravel={() =>
+                          calculateTravelTime(
+                            travelInformation.route[`duration_minutes`]
+                          )
+                        }
                       />
                     ))}
                 </div>

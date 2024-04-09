@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Button } from '@material-ui/core';
 import useCheapTripSearch from '../../hooks/useCheapTripSearch';
 import s from './../../../domain/entites/CheapTripSearch/cheaptrip.module.css';
@@ -22,6 +22,8 @@ const SearchForm = memo(() => {
     clearToField,
   } = useCheapTripSearch();
 
+  const [isClean, setIsClean] = useState(false);
+
   const handleSelectFrom = (value) => {
     selectFrom(value);
   };
@@ -35,11 +37,15 @@ const SearchForm = memo(() => {
 
   const handleCleanForm = () => {
     cleanForm();
+    handleSetIsClean(true);
   };
   const handleSubmit = () => {
     submit();
   };
 
+  const handleSetIsClean = (value) => {
+    setIsClean(value);
+  };
 
   return (
     <>
@@ -53,6 +59,8 @@ const SearchForm = memo(() => {
             inputStyle={inputFromStyle}
             handleClearInput={handleClearInput}
             handleClearInputValue={'from'}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
           />
         </div>
         <DoubleArrowIcon className={classes.media_icon} />
@@ -65,6 +73,8 @@ const SearchForm = memo(() => {
             inputStyle={inputToStyle}
             handleClearInput={handleClearInput}
             handleClearInputValue={'to'}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
           />
         </div>
       </form>
