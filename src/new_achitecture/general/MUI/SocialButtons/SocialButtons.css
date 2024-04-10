@@ -22,20 +22,13 @@
     height: auto;
     color: rgb(255, 255, 255);
 }
-/* .viber{
+.viber{
+    margin-top: 11px;
     width: 40px;
     height: auto;
-    color: rgb(71, 23, 147);
-} */
-.viber-mb{ 
-    width: 40px;
-    height: auto;
-    margin-top: 10px;
-    margin-left: 10px;
     color: rgb(255, 255, 255);
-    /* margin-left: -10vw;  */
-    display: none;
 }
+
 /* .facebook{
     width: 40px;
     height: auto;
@@ -57,19 +50,3 @@
     background-color: rgb(143, 93, 183) !important
 }
 
-@media (max-width: 1024px) {
-    /* .viber{
-        display: none;
-    } */
-    .viber-mb{
-        display: block;
-    }
-}
-@media (min-width: 1024px) {
-    .social-button.viber-but{
-        display: none;
-    }
-    .social-button .viber-but{
-       margin-left: 15vw !important 
-    }
-}
