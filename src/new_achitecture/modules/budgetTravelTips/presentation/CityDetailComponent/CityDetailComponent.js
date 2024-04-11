@@ -7,7 +7,6 @@ import {useParams} from "react-router";
 const CityDetailPage = () => {
     // const { cityName } = useParams();
     const cityName = city[0].Dublin.cityName;
-    
     const imageCity = city[0].Dublin.src;
     const textCity = city[0].Dublin.description;
 

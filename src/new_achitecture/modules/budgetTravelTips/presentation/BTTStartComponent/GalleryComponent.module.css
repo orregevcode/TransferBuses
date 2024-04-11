@@ -1,26 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-/** {*/
-/*    box-sizing: border-box;*/
-/*    font-family: "Roboto", sans-serif;*/
-/*    line-height: 1.6rem;*/
-/*}*/
-
 .sectionTitle {
     color: #000;
     font-size: 48px;
     text-align: center;
-    /*padding: 5px;*/
-
-    /*margin-top: 0;*/
-    /*margin-bottom: 0.5rem;*/
-    /*font-weight: 500;*/
-    /*line-height: 1.2;*/
 }
 
 .cityDetailsMain {
     text-align: center;
-
     margin-top: 0;
     margin-bottom: 1rem;
 }
@@ -34,25 +19,25 @@
 }
 
 .image {
-    width: 700px;
-    height: 700px;
+    width: 30rem;
+    height: 30rem;
 }
 
 .navGallery {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 1rem;
 }
 
 .galBut {
     border: 2px solid #e7680b;
-    border-radius: 80px;
-    width: 60px;
-    height: 60px;
+    border-radius: 8rem;
+    width: 4rem;
+    height: 4rem;
     cursor: pointer;
     background-color: white;
-    font-size: 17px;
+    font-size: 1rem;
     font-weight: bold;
     color: #e7680b;
 }
@@ -75,5 +60,78 @@
         text-align: center;
         font-size: 0.8rem;
         text-indent: 0;
+    }
+}
+
+@media (max-width: 540px) {
+    .navGallery {
+        gap: 0.5rem;
+    }
+
+    .image {
+        width: 27rem;
+        height: 27rem;
+    }
+
+    .galBut {
+        border-radius: 4rem;
+        width: 2.4rem;
+        height: 2.4rem;
+        font-size: 0.5rem;
+    }
+
+}
+
+@media (max-width: 450px) {
+    .navGallery {
+        gap: 0.5rem;
+    }
+
+    .image {
+        width: 17rem;
+        height: 17rem;
+    }
+
+    .galBut {
+        border-radius: 4rem;
+        width: 2.4rem;
+        height: 2.4rem;
+        font-size: 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .navGallery {
+        gap: 0.4rem;
+    }
+
+    .image {
+        width: 16rem;
+        height: 16rem;
+    }
+
+    .galBut {
+        border-radius: 4rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.4rem;
+    }
+}
+
+@media (max-width: 280px) {
+    .navGallery {
+        gap: 0.2rem;
+    }
+
+    .image {
+        width: 13rem;
+        height: 13rem;
+    }
+
+    .galBut {
+        border-radius: 4rem;
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.3rem;
     }
 }
