@@ -19,7 +19,6 @@ const Cities = () => {
         //useNavigate(path)
     }
     return (
-        <Container maxWidth={false}>
             <div className={styles.mainContainer}>
                 <hr className={styles.ruler}/>
                 <div className={styles.cityHeader}>Choose a city</div>
@@ -39,7 +38,6 @@ const Cities = () => {
                     </ul>
                 </div>
             </div>
-        </Container>
     );
 };
 export default Cities;

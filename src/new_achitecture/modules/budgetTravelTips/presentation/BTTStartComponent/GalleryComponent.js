@@ -28,24 +28,19 @@ const Gallery = () => {
     }
 
     return (
-        <Container maxWidth={false}>
-            <div className={styles.gallery}>
-                <div className={styles.sectionTitle}>
-                    <h2>The most popular cities</h2>
-                </div>
-                <div className={styles.cityDetailsMain}>
-                    <p>Explore the most popular cities around the world and experience their
-                        unique charm and attractions!</p>
-                </div>
-                <div className={styles.navGallery}>
-                    <button className={styles.galBut} onClick={prevImg}>Prev</button>
-                    <img className={styles.image}
-                         src={src} alt={"town"}/>
-                    <button className={styles.galBut} onClick={nextImg}>Next</button>
-                </div>
+        <div className={styles.gallery}>
+            <h2 className={styles.sectionTitle}>The most popular cities</h2>
+            {/*<div className={styles.cityDetailsMain}>*/}
+            <p className={styles.cityDetailsMain}>Explore the most popular cities around the world and experience their
+                unique charm and attractions!</p>
+            {/*</div>*/}
+            <div className={styles.navGallery}>
+                <button className={styles.galBut} onClick={prevImg}>Prev</button>
+                <img className={styles.image}
+                     src={src} alt={"town"}/>
+                <button className={styles.galBut} onClick={nextImg}>Next</button>
             </div>
-        </Container>
-
+        </div>
     );
 };
 export default Gallery;
