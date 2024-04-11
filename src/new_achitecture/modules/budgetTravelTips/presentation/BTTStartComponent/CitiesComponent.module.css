@@ -22,6 +22,11 @@
     color: #4f4f4f;
 }
 
+.anchor{
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    color: inherit; /* Наследуем цвет текста от родительского элемента */
+}
+
 .cityList {
     width: 100%;
     margin: 0;
