@@ -9,7 +9,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import {itemData} from "../itemData";
+import {itemData} from "../../data/galleryInfo/itemData";
 import style from './GalleryMUIComponent.module.css';
 
 export default function TitlebarImageList() {

@@ -2,7 +2,6 @@ export const itemData = [
     {
         img: require('./images/Paris.jpg'),
         title: 'Paris',
-        featured: true,
     },
     {
         img: require('./images/Berlin.jpg'),
