@@ -29,10 +29,8 @@
     "react-router": "^5.3.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "^5.0.1",
-    "react-slick": "^0.28.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "slick-carousel": "^1.8.1",
     "typeface-roboto": "^1.1.13",
     "yup": "^0.32.9",
     "yup-phone-lite": "^1.0.5"
