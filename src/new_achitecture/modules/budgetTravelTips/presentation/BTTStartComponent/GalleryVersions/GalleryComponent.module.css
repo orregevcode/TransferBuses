@@ -1,0 +1,164 @@
+.sectionTitle {
+    color: #000;
+    font-size: 3rem;
+    text-align: center;
+    padding: 5px;
+
+    margin: 0;
+}
+
+.cityDetailsMain {
+    color: #000;
+    text-align: center;
+    font-size: 1.2rem;
+    text-indent: 0;
+    padding: 20px;
+
+    margin: 0 0 20px 0;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    width: 40rem;
+    height: 40rem;
+}
+
+.navGallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.galBut {
+    border: 2px solid #e7680b;
+    border-radius: 8rem;
+    width: 4rem;
+    height: 4rem;
+    cursor: pointer;
+    background-color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #e7680b;
+}
+
+.galBut:hover {
+    background-color: #ff5722;
+    color: whitesmoke;
+}
+
+
+@media screen and (max-width: 320px) {
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 850px) {
+    .image {
+        width: 35rem;
+        height: 35rem;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .image {
+        width: 30rem;
+        height: 30rem;
+    }
+}
+
+@media (max-width: 670px) {
+    .navGallery {
+        gap: 0.5rem;
+    }
+
+    .image {
+        width: 30rem;
+        height: 30rem;
+    }
+
+    .galBut {
+        border-radius: 5rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        font-size: 0.5rem;
+    }
+}
+@media (max-width: 600px) {
+    .navGallery {
+        gap: 0.4rem;
+    }
+
+    .image {
+        width: 20rem;
+        height: 20rem;
+    }
+
+    .galBut {
+        border-radius: 5rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        font-size: 0.5rem;
+    }
+}
+
+@media (max-width: 540px) {
+    .navGallery {
+        gap: 0.4rem;
+    }
+
+    .image {
+        width: 17rem;
+        height: 17rem;
+    }
+
+    .galBut {
+        border-radius: 5rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        font-size: 0.5rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .navGallery {
+        gap: 0.4rem;
+    }
+
+    .image {
+        width: 16rem;
+        height: 16rem;
+    }
+
+    .galBut {
+        border-radius: 4rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.3rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .navGallery {
+        gap: 0.1rem;
+    }
+
+    .image {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .galBut {
+        border-radius: 2rem;
+        width: 2.1rem;
+        height: 2.1rem;
+        font-size: 0.3rem;
+    }
+}
