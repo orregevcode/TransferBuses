@@ -35,7 +35,7 @@ const Gallery = () => {
                     {'<'}
                 </button>
 
-                <div className={styles.imageContainer}>
+                <div>
                     <img className={styles.image} src={img[a]} alt="town"/>
                 </div>
 
