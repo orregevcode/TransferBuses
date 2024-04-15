@@ -1,7 +1,10 @@
 import React from 'react';
 import cities_json from '../../data/cities-fullList.json';
-import styles from './CitiesComponent.module.css'
+import styles from './CitiesComponent.module.css';
 import {BASE_REDIRECT_URL} from "../../data/constants";
+import {Link} from "react-router-dom";
+import {TRAVEL_TIPS_DESCRIPTION} from "../../../trip_search/domain/entites/utils/constants/constants";
+import {Container} from "@material-ui/core";
 
 const Cities = () => {
     const sortCities = cities_json.sort((a, b) => {
@@ -33,8 +36,10 @@ const Cities = () => {
                         </li>
                     ))}
                 </ul>
+
+            {/*<div className={styles.mainContainer}>*/}
+                
             </div>
-        </div>
     );
 };
 export default Cities;

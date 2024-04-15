@@ -154,6 +154,7 @@ export default function CarrierPage() {
                                     errorsTo={props.errors.to}
                                     touchedFrom={props.touched.from}
                                     touchedTo={props.touched.to}
+                                    setFieldValue={props.setFieldValue}
                                 />
 
                                 {/**** REGULAR TRIPS CHECKBOX ****/}
