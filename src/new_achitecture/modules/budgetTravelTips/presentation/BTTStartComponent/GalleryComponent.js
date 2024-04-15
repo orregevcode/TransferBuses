@@ -1,47 +1,50 @@
-import React, {useState} from 'react';
-import Schloss_Charlottenburg from './images/Schloss_Charlottenburg.jpeg'
-import shutterstock from "./images/shutterstock.jpg"
-import Tower_Bridge from './images/Tower_Bridge.jpg'
-import styles from './GalleryComponent.module.css'
+import React, {useState, useEffect} from 'react';
+import styles from './GalleryComponent.module.css';
+import {itemData} from '../../data/galleryInfo/itemData';
 
 const Gallery = () => {
-    const img = [Schloss_Charlottenburg, shutterstock, Tower_Bridge];
-    const [src, setSrc] = useState("https://upload.wikimedia.org/wikipedia/commons/1/12/Schloss_Charlottenburg_%28233558373%29.jpeg");
+    const img = itemData.map((item) => item.img);
     const [a, setA] = useState(1);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setA((prevA) => (prevA + 1) % img.length);
+        }, 3000); // Adjust the interval duration as per your preference
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [img.length]);
+
     const nextImg = () => {
-        if (a === 2) {
-            setA(0);
-        } else {
-            setA(a + 1);
-        }
-        setSrc(`${img[a]}`);
-    }
+        setA((prevA) => (prevA + 1) % img.length);
+    };
+
     const prevImg = () => {
-        if (a === 0) {
-            setA(2);
-        } else {
-            setA(a - 1);
-        }
-        setSrc(`${img[a]}`);
-    }
+        setA((prevA) => (prevA - 1 + img.length) % img.length);
+    };
 
     return (
         <div className={styles.gallery}>
-            <div className={styles.sectionTitle}>
-                <h2>The most popular cities</h2>
-            </div>
-            <div className={styles.cityDetailsMain}>
-                <p>Explore the most popular cities around the world and experience their
-                    unique charm and attractions!</p>
-            </div>
+            <h2 className={styles.sectionTitle}>The most popular cities</h2>
+            <p className={styles.cityDetailsMain}>
+                Explore the most popular cities around the world and experience their unique charm and attractions!
+            </p>
             <div className={styles.navGallery}>
-                <button className={styles.galBut} onClick={prevImg}>Prev</button>
-                <img className={styles.image}
-                     src={src} alt={"town"}/>
-                <button className={styles.galBut} onClick={nextImg}>Next</button>
+                <button className={styles.galBut} onClick={prevImg}>
+                    {'<'}
+                </button>
+
+                <div>
+                    <img className={styles.image} src={img[a]} alt="town"/>
+                </div>
+
+                <button className={styles.galBut} onClick={nextImg}>
+                    {'>'}
+                </button>
             </div>
         </div>
     );
 };
+
 export default Gallery;

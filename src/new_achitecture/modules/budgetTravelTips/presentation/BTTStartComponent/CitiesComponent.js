@@ -3,6 +3,7 @@ import cities_json from '../../data/cities-fullList.json';
 import styles from './CitiesComponent.module.css'
 import {Link} from "react-router-dom";
 import {TRAVEL_TIPS_DESCRIPTION} from "../../../trip_search/domain/entites/utils/constants/constants";
+import {Container} from "@material-ui/core";
 
 const Cities = () => {
     const sortCities = cities_json.sort((a, b) => {
@@ -18,25 +19,25 @@ const Cities = () => {
         //useNavigate(path)
     }
     return (
-        <div>
-            <hr className={styles.ruler}/>
-            <div className={styles.cityHeader}>Choose a city</div>
-            <hr className={styles.ruler}/>
-            <div>
-                <ul className={styles.cityList}>
-                    {sortCities.map((item, key) => (
-                        <li className={styles.list} key={key}>
-                            {/*<Link to={`${TRAVEL_TIPS_DESCRIPTION}/${item.name}`}>*/}
-                            {/*    {item.name}*/}
-                            {/*</Link>*/}
-                            <Link to={TRAVEL_TIPS_DESCRIPTION}>
-                                {item.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+            <div className={styles.mainContainer}>
+                <hr className={styles.ruler}/>
+                <div className={styles.cityHeader}>Choose a city</div>
+                <hr className={styles.ruler}/>
+                <div>
+                    <ul className={styles.cityList}>
+                        {sortCities.map((item, key) => (
+                            <li className={styles.list} key={key}>
+                                {/*<Link to={`${TRAVEL_TIPS_DESCRIPTION}/${item.name}`}>*/}
+                                {/*    {item.name}*/}
+                                {/*</Link>*/}
+                                <Link to={TRAVEL_TIPS_DESCRIPTION}>
+                                    {item.name}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
-        </div>
     );
 };
 export default Cities;
