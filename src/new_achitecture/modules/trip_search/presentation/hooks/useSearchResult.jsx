@@ -12,45 +12,45 @@ const useSearchResult = (data) => {
   const [largeTransportIcon, setLargeTransportIcon] = useState(null);
   const [typeOfTransport, setTypeOfTransport] = useState(null);
   const timeTravel = `${Math.floor(data.trip_duration / 60)} h ${
-    data.trip_duration - Math.floor(data.trip_duration / 60) * 60
+      data.trip_duration - Math.floor(data.trip_duration / 60) * 60
   } m`;
   const priceTravel = `€ ${data.euro_price}`;
   const style = useMediaQuery('(max-width:650px)')
-    ? resultItemStyle.sm
-    : resultItemStyle.lg;
+      ? resultItemStyle.sm
+      : resultItemStyle.lg;
 
   const defineTypeOfTransport = (transport) => {
     let resultLink;
     switch (transport) {
       case 4:
         resultLink = (
-          <Link href='https://blablacar.com' target='_blank' rel='noreferrer'>
-            <Button variant='outlined' style={style.buyTicket} type='submit'>
-              Find a trip
-            </Button>
-          </Link>
+            <Link href='https://blablacar.com' target='_blank' rel='noreferrer'>
+              <Button variant='outlined' style={style.buyTicket} type='submit'>
+                Find a trip
+              </Button>
+            </Link>
         );
         break;
       case 5:
         resultLink = (
-          <Link href='https://www.aferry.com/' target='_blank' rel='noreferrer'>
-            <Button variant='outlined' style={style.buyTicket} type='submit'>
-              Buy Ticket
-            </Button>
-          </Link>
+            <Link href='https://www.aferry.com/' target='_blank' rel='noreferrer'>
+              <Button variant='outlined' style={style.buyTicket} type='submit'>
+                Buy Ticket
+              </Button>
+            </Link>
         );
         break;
       default:
         resultLink = (
-          <Link
-            href='https://omio.sjv.io/XxEWmb'
-            target='_blank'
-            rel='noreferrer'
-          >
-            <Button variant='outlined' style={style.buyTicket} type='submit'>
-              Buy Ticket
-            </Button>
-          </Link>
+            <Link
+                href='https://omio.sjv.io/XxEWmb'
+                target='_blank'
+                rel='noreferrer'
+            >
+              <Button variant='outlined' style={style.buyTicket} type='submit'>
+                Buy Ticket
+              </Button>
+            </Link>
         );
     }
     setTypeOfTransport(resultLink);
@@ -60,80 +60,81 @@ const useSearchResult = (data) => {
     switch (transport) {
       case 4:
         resultIcon = (
-          <Typography>
-            <img src={RideSharing} alt='car-shearing' style={style.car} /> Ride
-            share
-          </Typography>
+            <Typography>
+              <img src={RideSharing} alt='car-shearing' style={style.car} /> Ride
+              share
+            </Typography>
         );
         break;
       case 3:
         resultIcon = (
-          <Typography>
-            <TrainIcon style={style.icon} fontSize='small' /> Train
-          </Typography>
+            <Typography>
+              <TrainIcon style={style.icon} fontSize='small' /> Train
+            </Typography>
         );
         break;
       case 2:
         resultIcon = (
-          <Typography>
-            <DirectionsBusIcon style={style.icon} fontSize='small' /> Bus
-          </Typography>
+            <Typography>
+              <DirectionsBusIcon style={style.icon} fontSize='small' /> Bus
+            </Typography>
         );
         break;
       case 10:
         resultIcon = (
-          <Typography>
-            <DirectionsBoatIcon style={style.icon} fontSize='small' /> Ferry
-          </Typography>
+            <Typography>
+              <DirectionsBoatIcon style={style.icon} fontSize='small' /> Ferry
+            </Typography>
         );
         break;
       default:
         resultIcon = (
-          <Typography>
-            <AirplanemodeActiveIcon style={style.icon} fontSize='small' />{' '}
-            Flight
-          </Typography>
+            <Typography>
+              <AirplanemodeActiveIcon style={style.icon} fontSize='small' />{' '}
+              Flight
+            </Typography>
         );
     }
     setSmallTransportIcon(resultIcon);
   };
+
 
   const defineLargeIconOfTransport = (transport) => {
     let resultIcon;
     switch (transport) {
       case 4:
         resultIcon = (
-          <Typography>
-            <img src={RideSharing} alt='car-sharing' />
-          </Typography>
+            <Typography>
+              <img src={RideSharing} alt='car-sharing' />
+            </Typography>
         );
         break;
       case 3:
         resultIcon = (
-          <Typography>
-            <TrainIcon fontSize='large' />
-          </Typography>
+            <Typography>
+              <TrainIcon fontSize='large' />
+            </Typography>
         );
         break;
       case 2:
         resultIcon = (
-          <Typography>
-            <DirectionsBusIcon fontSize='large' />
-          </Typography>
+            <Typography>
+              <DirectionsBusIcon fontSize='large' />
+            </Typography>
         );
         break;
       case 10:
         resultIcon = (
-          <Typography>
-            <DirectionsBoatIcon fontSize='large' />
-          </Typography>
+            <Typography>
+              <DirectionsBoatIcon fontSize='large' />
+            </Typography>
         );
         break;
       default:
         resultIcon = (
-          <Typography>
-            <AirplanemodeActiveIcon fontSize='large' />
-          </Typography>
+            <Typography>
+              <AirplanemodeActiveIcon fontSize='large' />
+            </Typography>
         );
     }
     setLargeTransportIcon(resultIcon);

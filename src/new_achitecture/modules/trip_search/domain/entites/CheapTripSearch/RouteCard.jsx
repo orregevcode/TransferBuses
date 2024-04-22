@@ -51,7 +51,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                               fontSize='small'
                               sx={style.arrowStyle}
                           />}
-                          <span style={style.regularFont}>{locations[travelInformation.from].name}</span>
+                          <span style={style.regularFont}>{travelInformation.from}</span>
                         </React.Fragment>
                     ))}
                     <ArrowForwardIcon
@@ -59,7 +59,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                         sx={style.arrowStyle}
                     />
                     {locations[route.to] && (
-                        <span style={style.regularFont}>{locations[route.to].name}</span>
+                        <span style={style.regularFont}>{locations[route.to]}</span>
                     )}
                   </Typography>
                   <Box style={style.bottomContainer}>
