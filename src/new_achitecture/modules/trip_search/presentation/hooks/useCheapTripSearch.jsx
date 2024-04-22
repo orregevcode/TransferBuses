@@ -10,6 +10,7 @@ import {
 } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
+import {getRoutes} from "../../data/api/trip_search_data";
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
@@ -116,7 +117,7 @@ const useCheapTripSearch = () => {
     setToKey('');
     setSelectedRoutesKeys(null);
   };
-  const submit = () => {
+  const submit = async () => {
     if (from === '') return;
     let routesKeys = Object.keys(routes);
     const filteredByFrom = routesKeys.filter(
@@ -128,9 +129,10 @@ const useCheapTripSearch = () => {
     } else if (to === 'Anywhere') {
       setSelectedRoutesKeys(filteredByFrom);
     } else {
-      const filteredByTo = filteredByFrom.filter(
+      /*const filteredByTo = filteredByFrom.filter(
         (key) => routes[key].to === +toKey
-      );
+      );*/
+      const filteredByTo = getRoutes(fromKey, toKey);
       const sortedByPrice = sortByPrice([...filteredByTo]);
       setSelectedRoutesKeys(sortedByPrice);
     }

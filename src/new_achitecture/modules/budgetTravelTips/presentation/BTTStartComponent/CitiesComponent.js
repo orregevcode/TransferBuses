@@ -40,6 +40,7 @@ const Cities = () => {
             {/*<div className={styles.mainContainer}>*/}
                 
             </div>
+        </div>
     );
 };
 export default Cities;
