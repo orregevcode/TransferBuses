@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import locations from '../..//../data/jsons/cheapTripData/new_jsons/locations.json';
+import locations from '../..//../data/jsons/cheapTripData/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';

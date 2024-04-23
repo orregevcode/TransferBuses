@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-// import common_routes from '../../data/jsons/cheapTripData/new_jsons/routes.json';
-// import flying_routes from '../../data/jsons/cheapTripData/new_jsons/flying_routes.json';
-import locations from '../../data/jsons/cheapTripData/new_jsons/locations.json';
-import { asyncAutocomplete } from '../../domain/entites/CheapTripSearch/asyncAutocomplete';
+import React, { useState, useEffect } from 'react';
+import locations from '../../data/jsons/cheapTripData/locations.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
@@ -15,10 +12,7 @@ const useCheapTripSearch = () => {
   const [toKey, setToKey] = useState('');
   const [asyncFromOptions, setAsyncFromOptions] = useState([]);
   const [asyncToOptions, setAsyncToOptions] = useState([]);
-  const [geoLocation, setGeoLocation] = useState({ latitude: 0, longitude: 0 });
   const [selectedRoutesKeys, setSelectedRoutesKeys] = useState(null);
-  const [routesForRender, setRoutesForRender] = useState({});
-  const [flyingRoutesByFrom, setFlyingRoutesByFrom] = useState([{}]);
   const [isClean, setIsClean] = useState(false);
   const [locationsKeysSorted, setLocationsKeySorted] = useState([]);
   const { filterBy, filteredRoutes } = useSelector((state) => {
@@ -125,25 +119,6 @@ const useCheapTripSearch = () => {
     const routes = await getRoutes();
     const sortedRoutes = sortByPrice(routes['route_data']);
     setSelectedRoutesKeys(sortedRoutes);
-    // const test = await getPathMap(fromKey, toKey);
-    // console.log(test);
-    //   if (from === '') return;
-    //   // let routesKeys = Object.keys(routes);
-    //   // const filteredByFrom = routesKeys.filter(
-    //   //   (key) => routes[key].from === +fromKey
-    //   // );
-    //   if (to === '') {
-    //     setTo('Anywhere');
-    //     setToKey('0');
-    //   } else if (to === 'Anywhere') {
-    //     setSelectedRoutesKeys(filteredByFrom);
-    //   } else {
-    //     const filteredByTo = filteredByFrom.filter(
-    //       (key) => routes[key].to === +toKey
-    //     );
-    //     const sortedByPrice = sortByPrice([...filteredByTo]);
-    //     setSelectedRoutesKeys(sortedByPrice);
-    //   }
   };
 
   useEffect(() => {
@@ -152,16 +127,6 @@ const useCheapTripSearch = () => {
     }
   }, [selectedRoutesKeys]);
 
-  // const startAsyncAutocomplete = (e, setState, options) => {
-  //   // get geolocation
-  //   navigator.geolocation.getCurrentPosition(function (position) {
-  //     setGeoLocation({
-  //       latitude: position.coords.latitude,
-  //       longitude: position.coords.longitude,
-  //     });
-  //   });
-  //   asyncAutocomplete(e, setState, options, geoLocation);
-  // };
 
   const checkFromOption =
     asyncFromOptions.length !== 0 ? asyncFromOptions : fromOptions;

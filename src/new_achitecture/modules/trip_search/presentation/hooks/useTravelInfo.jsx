@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { resultItemStyle } from '../components/searchResult/style';
 
@@ -8,18 +8,6 @@ const useTravelInfo = (travelInfo) => {
     : resultItemStyle.lg;
 
   const lessThan480 = useMediaQuery('(max-width:480px)');
-
-  // const [additionalInfoOpened, setAdditionalInfoOpened] = useState(false);
-  // const [additionalInformation, setAdditionalInformation] = useState(null);
-
-  // useEffect(() => {
-  //   // import(`../../cheapTripData/inner_jsons/${travelInfo.route}.json`)
-  //   import(`../../data/jsons/cheapTripData/${travelInfo.route}.json`)
-  //     .then((res) => setAdditionalInformation(res.default))
-  //     .catch((_) => null);
-  // }, [travelInfo.route]);
-
-  // const setAddInfoOpen = () => setAdditionalInfoOpened(true);
 
   return { style, lessThan480 };
 };
