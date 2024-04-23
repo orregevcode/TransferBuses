@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
     baseURL: 'https://express-example-kj10.onrender.com/',
-    timeout: 5000
+    timeout: 50000
 });
 
 export async function getRoutes(fromId, toId) {
