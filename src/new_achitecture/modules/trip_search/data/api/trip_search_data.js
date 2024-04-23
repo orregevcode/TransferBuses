@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://express-example-kj10.onrender.com/',
+    // baseURL: 'https://express-example-kj10.onrender.com/',
+    baseURL: 'http://localhost:3000/',
     timeout: 5000
 });
 
@@ -12,4 +13,9 @@ export async function getRoutes(fromId, toId) {
     } else {
         throw `Incorrect values ${fromId}, ${toId}`;
     }
+}
+
+export async function getLocations(fromId, toId) {
+    const res = await instance.get('service/locations');
+    return res;
 }

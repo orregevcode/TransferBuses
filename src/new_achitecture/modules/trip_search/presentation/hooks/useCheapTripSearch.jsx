@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import locations from '../../data/jsons/cheapTripData/locations.json';
+// import locations from '../../data/jsons/cheapTripData/locations.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
-import { getRoutes } from '../../data/api/trip_search_data';
+import {getLocations, getRoutes} from '../../data/api/trip_search_data';
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
@@ -15,6 +15,7 @@ const useCheapTripSearch = () => {
   const [asyncToOptions, setAsyncToOptions] = useState([]);
   const [selectedRoutesKeys, setSelectedRoutesKeys] = useState(null);
   const [isClean, setIsClean] = useState(false);
+  const [locations, setLocations] = useState();
   const [locationsKeysSorted, setLocationsKeySorted] = useState([]);
   const { filterBy, filteredRoutes } = useSelector((state) => {
     return state.cheapTripSearch;
@@ -27,15 +28,22 @@ const useCheapTripSearch = () => {
 
   const PAGINATION_LIMIT = 10;
 
-  useEffect(() => {
+  const getLocationsLocal = async () => {
+    const temp = await getLocations();
+    const loc = temp.data
+    setLocations(loc);
     setLocationsKeySorted((prevState) => {
-      if (!locations) return prevState;
-      let temp = { ...locations };
-      return Object.keys(temp).sort((a, b) => {
-        return temp[a].name > temp[b].name ? 1 : -1;
+      if (!loc) return prevState;
+      return Object.keys(loc).sort((a, b) => {
+        return loc[a].name > loc[b].name ? 1 : -1;
       });
     });
-  }, [locations]);
+  }
+
+
+  useEffect(() => {
+    getLocationsLocal();
+  }, []);
 
   const clearFromField = () => {
     setFrom('');
