@@ -25,23 +25,23 @@ function TravelInfo({ travelInfo, timeTravel, price }) {
               <Typography style={{ ...style.boldText, ...style.directionText }}>
                 {travelInfo.route.from && (
                   <span style={{ padding: '0 2px' }}>
-                    {travelInfo.route.from}
+                    {travelInfo.route.from.name}
                   </span>
                 )}
                 <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
                 {travelInfo.route.to && (
                   <span style={{ padding: '0 2px' }}>
-                    {travelInfo.route.to}
+                    {travelInfo.route.to.name}
                   </span>
                 )}
               </Typography>
-              <span>{travelInfo.route[`transportation_type`]}</span>
+              <span>{travelInfo.route[`transportation_type`].name}</span>
             </Box>
             <Box style={style.directions}>
               {!lessThan480 ? (
                 <>
                   <Typography sx={{ color: 'rgb(119, 87, 80)' }}>
-                    {timeTravel(travelInfo.duration)}
+                    {timeTravel(travelInfo.duration_minutes)}
                   </Typography>
                   <Box style={style.btnByTicket}>
                     <Link
@@ -93,7 +93,7 @@ function TravelInfo({ travelInfo, timeTravel, price }) {
                   <Box style={{ width: '100%' }}>
                     <Box style={style.resultStyleBottom}>
                       <Typography sx={{ color: 'rgb(119, 87, 80)' }}>
-                        {timeTravel(travelInfo.duration)}
+                        {timeTravel(travelInfo.duration_minutes)}
                       </Typography>
                       <Typography style={style.price}>
                         {`€ ${travelInfo.route['euro_price']}.00`}

@@ -103,7 +103,7 @@ const useCheapTripSearch = () => {
       redirect: 'follow',
     };
 
-    return fetch('http://localhost:3000/routes/9/330', requestOptions)
+    return fetch(`http://localhost:3000/routes/${fromKey}/${toKey}`, requestOptions)
       .then((response) => response.json())
       .then((result) => result)
       .catch((error) => console.error(error));
@@ -114,14 +114,10 @@ const useCheapTripSearch = () => {
       setTo('Anywhere');
       setToKey('0');
     }
-    console.log(fromKey + ' ' + toKey);
     // const routes = await getRoutes(fromKey, toKey);
 
     const test = await getRoutesLocal();
     const sortedRoutes = sortByPrice(test);
-    console.log('====================================');
-    console.log(`sortedRoutes: ${Array.isArray(sortedRoutes)}`);
-    console.log('====================================');
     setSelectedRoutesKeys(sortedRoutes);
   };
 
@@ -139,24 +135,20 @@ const useCheapTripSearch = () => {
   const selectFrom = (value) => {
     setFrom(value.label);
     setFromKey(value.key);
-    console.log(value);
   };
 
   const selectTo = (value) => {
     setTo(value.label);
     setToKey(value.key);
-    console.log(value);
   };
 
   const sortByPrice = (arr) => {
     const allRoutes = [...arr];
-    console.log(allRoutes);
     return allRoutes.sort(
       (route1, route2) => route1['euro_price'] - route2['euro_price']
     );
   };
   const cleanSearchForm = (value) => {
-    console.log(`in cleanSearchForm: ${value}`);
     setIsClean(false);
   };
 

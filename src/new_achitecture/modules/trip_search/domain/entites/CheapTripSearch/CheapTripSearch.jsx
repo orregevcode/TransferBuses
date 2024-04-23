@@ -9,8 +9,6 @@ function CheapTripSearch({ setIsSearchListIsOpen }) {
   const { routes, filteredRoutes, PAGINATION_LIMIT, style } =
     useCheapTripSearch();
 
-  console.log(`filtered routes: ${Array.isArray(filteredRoutes)}`);
-
   return (
     <>
       <SearchForm />

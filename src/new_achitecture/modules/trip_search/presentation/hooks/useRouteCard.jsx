@@ -38,18 +38,18 @@ const useRouteCard = (route) => {
 
   
   useEffect(() => {
-    if (!directRoutes) return;
+    // if (!directRoutes) return;
     let tempKeys = route['direct_paths'];
     let temp = [];
-    tempKeys.forEach((key) => {
+    tempKeys.forEach((route) => {
       const routeItem = {
-        route: key,
-        ...directRoutes[key],
+        route: route,
+        // ...directRoutes[key],
       };
       temp.push(routeItem);
     });
     setTravelInfo(temp);
-  }, [directRoutes, route]);
+  }, [route]);
 
   const selectTransportIcon = (transportType, style) => {
     switch (transportType) {

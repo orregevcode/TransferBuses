@@ -44,7 +44,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     {travelInfo.map((item, index) => (
                       <Box style={style.airplaneBox} key={index}>
                         {selectTransportIcon(
-                          item.route['transportation_type'],
+                          item.route['transportation_type'].name,
                           style.airplaneIcon
                         )}
                       </Box>
@@ -56,8 +56,8 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     {travelInfo &&
                       travelInfo.length !== 0 &&
                       travelInfo.map((travelInformation, index) => (
-                        <>
-                          <React.Fragment key={travelInformation.route.from}>
+                        <span key={index}>
+                          <React.Fragment key={index}>
                             {index !== 0 && (
                               <ArrowForwardIcon
                                 fontSize='small'
@@ -68,7 +68,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                               {travelInformation.route.from.name}
                             </span>
                           </React.Fragment>
-                        </>
+                        </span>
                       ))}
                     <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
                     {route['direct_paths'] &&
