@@ -98,15 +98,12 @@ const useCheapTripSearch = () => {
   };
 
   const getRoutesLocal = async () => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    return fetch(`http://localhost:3000/routes/${fromKey}/${toKey}`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => result)
-      .catch((error) => console.error(error));
+    const routes = await getRoutes(fromKey, toKey);
+    return routes.data;
+    // fetch(`http://localhost:3000/routes/${fromKey}/${toKey}`, requestOptions)
+    //   .then((response) => response.json())
+    //   .then((result) => result)
+    //   .catch((error) => console.error(error));
   };
 
   const submit = async () => {
@@ -114,10 +111,9 @@ const useCheapTripSearch = () => {
       setTo('Anywhere');
       setToKey('0');
     }
-    // const routes = await getRoutes(fromKey, toKey);
 
-    const test = await getRoutesLocal();
-    const sortedRoutes = sortByPrice(test);
+    const routes = await getRoutesLocal();
+    const sortedRoutes = sortByPrice(routes);
     setSelectedRoutesKeys(sortedRoutes);
   };
 
