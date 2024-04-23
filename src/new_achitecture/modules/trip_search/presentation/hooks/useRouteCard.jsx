@@ -15,6 +15,7 @@ import DirectionsBoatIcon from '@mui/icons-material/DirectionsBoat';
 import SubwayIcon from '@mui/icons-material/Subway';
 
 const useRouteCard = (route) => {
+  const [travelInfo, setTravelInfo] = useState(null);
   const style = useMediaQuery('(max-width:650px)')
     ? resultStyle.sm
     : resultStyle.lg;
@@ -35,10 +36,10 @@ const useRouteCard = (route) => {
   const timeTravel = calculateTravelTime(route['duration_minutes']);
   const priceTravel = `€ ${route[`euro_price`]}`;
 
-  const [travelInfo, setTravelInfo] = useState(null);
+  
   useEffect(() => {
     if (!directRoutes) return;
-    let tempKeys = route.direct_paths;
+    let tempKeys = route['direct_paths'];
     let temp = [];
     tempKeys.forEach((key) => {
       const routeItem = {
@@ -53,32 +54,40 @@ const useRouteCard = (route) => {
   const selectTransportIcon = (transportType, style) => {
     switch (transportType) {
       case 'Flight':
-        return <AirplanemodeActiveIcon sx={style}/>
+        return <AirplanemodeActiveIcon sx={style} />;
       case 'Bus':
-        return <DirectionsBusIcon sx={style}/>
+        return <DirectionsBusIcon sx={style} />;
       case 'Train':
-        return <TrainIcon sx={style}/>
+        return <TrainIcon sx={style} />;
       case 'Car Drive':
-        return <DirectionsCarIcon sx={style}/>
+        return <DirectionsCarIcon sx={style} />;
       case 'Taxi':
-        return <LocalTaxiIcon sx={style}/>
+        return <LocalTaxiIcon sx={style} />;
       case 'Walk':
-        return <DirectionsWalkIcon sx={style}/>
+        return <DirectionsWalkIcon sx={style} />;
       case 'Town Car':
-        return <DirectionsCarIcon sx={style}/>
+        return <DirectionsCarIcon sx={style} />;
       case 'Ride Share':
-        return <ThumbUpIcon sx={style}/>
+        return <ThumbUpIcon sx={style} />;
       case 'Shuttle':
-        return <AirportShuttleIcon sx={style}/>
+        return <AirportShuttleIcon sx={style} />;
       case 'Ferry':
-        return <DirectionsBoatIcon sx={style}/>
+        return <DirectionsBoatIcon sx={style} />;
       case 'Subway':
-        return <SubwayIcon sx={style}/>
-      default: return <QuestionMarkIcon sx={style}/>
+        return <SubwayIcon sx={style} />;
+      default:
+        return <QuestionMarkIcon sx={style} />;
     }
-  }
+  };
 
-  return { style, timeTravel, priceTravel, travelInfo, calculateTravelTime, selectTransportIcon };
+  return {
+    style,
+    timeTravel,
+    priceTravel,
+    travelInfo,
+    calculateTravelTime,
+    selectTransportIcon,
+  };
 };
 
 export default useRouteCard;

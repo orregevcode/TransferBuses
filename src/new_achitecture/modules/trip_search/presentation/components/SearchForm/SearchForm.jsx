@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import React, { memo, useState } from 'react';
 import { Button } from '@material-ui/core';
 import useCheapTripSearch from '../../hooks/useCheapTripSearch';
 import s from './../../../domain/entites/CheapTripSearch/cheaptrip.module.css';

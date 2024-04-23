@@ -21,6 +21,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
     selectTransportIcon,
   } = useRouteCard(route);
   const price = priceTravel + '.00';
+
   useEffect(() => {
     if (setIsSearchListIsOpen) {
       setIsSearchListIsOpen(true);
@@ -37,13 +38,15 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls='panel1a-content'
                 id='panel1a-header'
-
               >
                 {travelInfo && travelInfo.length !== 0 && (
                   <Box style={style.transportIcons}>
                     {travelInfo.map((item, index) => (
                       <Box style={style.airplaneBox} key={index}>
-                        {selectTransportIcon(item.route['transportation_type'], style.airplaneIcon)}
+                        {selectTransportIcon(
+                          item.route['transportation_type'],
+                          style.airplaneIcon
+                        )}
                       </Box>
                     ))}
                   </Box>
@@ -53,22 +56,31 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     {travelInfo &&
                       travelInfo.length !== 0 &&
                       travelInfo.map((travelInformation, index) => (
-                        <React.Fragment key={travelInformation.route.from}>
-                          {index !== 0 && (
-                            <ArrowForwardIcon
-                              fontSize='small'
-                              sx={style.arrowStyle}
-                            />
-                          )}
-                          <span style={style.italicFont}>
-                            {travelInformation.route.from}
-                          </span>
-                        </React.Fragment>
+                        <>
+                          <React.Fragment key={travelInformation.route.from}>
+                            {index !== 0 && (
+                              <ArrowForwardIcon
+                                fontSize='small'
+                                sx={style.arrowStyle}
+                              />
+                            )}
+                            <span style={style.italicFont}>
+                              {travelInformation.route.from.name}
+                            </span>
+                          </React.Fragment>
+                        </>
                       ))}
                     <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
                     {route['direct_paths'] &&
-                      route['direct_paths'].length > 0 &&
-                        <span style={style.italicFont}>{route['direct_paths'][route['direct_paths'].length - 1].to}</span>}
+                      route['direct_paths'].length > 0 && (
+                        <span style={style.italicFont}>
+                          {
+                            route['direct_paths'][
+                              route['direct_paths'].length - 1
+                            ].to.name
+                          }
+                        </span>
+                      )}{' '}
                   </Typography>
                   <Box style={style.bottomContainer}>
                     <Box style={style.priceContainer}>
@@ -77,17 +89,15 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     <Typography style={style.time}>{timeTravel}</Typography>
                   </Box>
                 </Box>
-              </div>
-
               </AccordionSummary>
               <AccordionDetails>
                 <div>
                   {travelInfo &&
                     travelInfo.length !== 0 &&
-                    travelInfo.map((travelInformation) => (
+                    travelInfo.map((travelInformation, index) => (
                       <TravelInfo
                         travelInfo={travelInformation}
-                        key={travelInformation.route.to}
+                        key={index}
                         price={price}
                         timeTravel={() =>
                           calculateTravelTime(

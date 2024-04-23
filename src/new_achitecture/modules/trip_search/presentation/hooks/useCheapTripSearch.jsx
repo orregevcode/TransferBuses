@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
-import {getRoutes} from "../../data/api/trip_search_data";
+import { getRoutes } from '../../data/api/trip_search_data';
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
@@ -97,6 +97,17 @@ const useCheapTripSearch = () => {
     setIsClean(true);
   };
 
+  const getRoutesLocal = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    return fetch('http://localhost:3000/routes/9/330', requestOptions)
+      .then((response) => response.json())
+      .then((result) => result)
+      .catch((error) => console.error(error));
+  };
 
   const submit = async () => {
     if (to === '') {
@@ -104,9 +115,13 @@ const useCheapTripSearch = () => {
       setToKey('0');
     }
     console.log(fromKey + ' ' + toKey);
-    /*const routes = await getRoutes();*/
-      const filteredByTo = getRoutes(fromKey, toKey);
-    const sortedRoutes = sortByPrice(routes['route_data']);
+    // const routes = await getRoutes(fromKey, toKey);
+
+    const test = await getRoutesLocal();
+    const sortedRoutes = sortByPrice(test);
+    console.log('====================================');
+    console.log(`sortedRoutes: ${Array.isArray(sortedRoutes)}`);
+    console.log('====================================');
     setSelectedRoutesKeys(sortedRoutes);
   };
 
@@ -115,7 +130,6 @@ const useCheapTripSearch = () => {
       dispatch(setFilteredRoutes(selectedRoutesKeys));
     }
   }, [selectedRoutesKeys]);
-
 
   const checkFromOption =
     asyncFromOptions.length !== 0 ? asyncFromOptions : fromOptions;
@@ -136,6 +150,7 @@ const useCheapTripSearch = () => {
 
   const sortByPrice = (arr) => {
     const allRoutes = [...arr];
+    console.log(allRoutes);
     return allRoutes.sort(
       (route1, route2) => route1['euro_price'] - route2['euro_price']
     );

@@ -9,24 +9,23 @@ function CheapTripSearch({ setIsSearchListIsOpen }) {
   const { routes, filteredRoutes, PAGINATION_LIMIT, style } =
     useCheapTripSearch();
 
+  console.log(`filtered routes: ${Array.isArray(filteredRoutes)}`);
+
   return (
     <>
       <SearchForm />
       <div>
         {filteredRoutes &&
-          filteredRoutes
-            .slice(0, PAGINATION_LIMIT)
-            .map((route, index) => {
-              return (
-                <RouteCard
-                  route={route}
-                  key={route + index}
-                  setIsSearchListIsOpen={setIsSearchListIsOpen}
-                />
-              );
-            })}
-        {filteredRoutes &&
-          filteredRoutes.length === 0 && <p>No such routes</p>}
+          filteredRoutes.slice(0, PAGINATION_LIMIT).map((route, index) => {
+            return (
+              <RouteCard
+                route={route}
+                key={index}
+                setIsSearchListIsOpen={setIsSearchListIsOpen}
+              />
+            );
+          })}
+        {filteredRoutes && filteredRoutes.length === 0 && <p>No such routes</p>}
       </div>
     </>
   );

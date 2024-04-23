@@ -19,6 +19,8 @@ const useSearchResult = (data) => {
     ? resultItemStyle.sm
     : resultItemStyle.lg;
 
+    console.log(`data: ${data}`)
+
   const defineTypeOfTransport = (transport) => {
     let resultLink;
     switch (transport) {
