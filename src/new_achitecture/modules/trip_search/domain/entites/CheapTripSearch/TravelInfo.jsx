@@ -1,5 +1,5 @@
-import React from 'react';
-import locations from '../../../data/jsons/cheapTripData/locations.json';
+import React, {useEffect, useState} from 'react';
+// import locations from '../../../data/jsons/cheapTripData/locations.json';
 import { Box, Button, Link, Typography } from '@material-ui/core';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import useTravelInfo from '../../../presentation/hooks/useTravelInfo';
@@ -8,13 +8,23 @@ import {
   BUY_TICKET_AFFILIATE,
   HOSTEL_WORLD_AFFILIATE,
 } from '../utils/constants/links';
+import {getLocations} from "../../../data/api/trip_search_data";
 
 function TravelInfo({ travelInfo, timeTravel }) {
+  const [locations, setLocations] = useState(null);
   const {
     style,
     lessThan480,
   } = useTravelInfo(travelInfo);
 
+  const getLocationsLocal = async () => {
+    const temp = await getLocations();
+    const loc = temp.data
+    setLocations(loc);
+  }
+  useEffect(() => {
+    getLocationsLocal();
+  }, []);
 
   return (
     <div>
