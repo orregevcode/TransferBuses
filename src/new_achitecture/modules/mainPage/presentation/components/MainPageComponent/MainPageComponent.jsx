@@ -4,9 +4,8 @@ import filtersClasses from "../../../../../modules/trip_search/lib/filterSearch/
 
 import css from "./MainPageComponent.module.css";
 import Logo_Cht from "./Logo_ChT_2.png";
-import {AutoCompleteSection} from "../../../../trip_search/lib/autoComplete/AutoCompleteSection";
+// import {AutoCompleteSection} from "../../../../trip_search/lib/autoComplete/AutoCompleteSection";
 import CheapTripSearch from "../../../../trip_search/domain/entites/CheapTripSearch/CheapTripSearch";
-import {Link} from "react-router-dom";
 
 export const MainPageComponent = () => {
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { resultStyle } from '../components/searchResult/style';
 import { useMediaQuery } from '@material-ui/core';
-import directRoutes from '../../data/jsons/cheapTripData/direct_routes.json';
+// import directRoutes from '../../data/jsons/cheapTripData/direct_routes.json';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';

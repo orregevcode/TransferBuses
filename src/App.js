@@ -9,8 +9,8 @@ import useChangeLanguage from './new_achitecture/general/hooks/useChangeLanguage
 import { useLocation } from 'react-router';
 import PlayStoreModal from './new_achitecture/general/components/PlayStoreModal/PlayStoreModal';
 import usePlayStoreModal from './new_achitecture/general/hooks/usePlayStoreModal';
-import locations from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/locations.json';
-import transport from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/transport.json';
+// import locations from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/locations.json';
+// import transport from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/transport.json';
 function App() {
   const { i18n, lang } = useChangeLanguage();
   const { open } = usePlayStoreModal();
@@ -20,8 +20,8 @@ function App() {
   //   process.env.REACT_APP_BUILD_MODE
   // );
   useEffect(() => {
-    sessionStorage.setItem('locations', JSON.stringify(locations));
-    sessionStorage.setItem('transportationTypes', JSON.stringify(transport));
+    // sessionStorage.setItem('locations', JSON.stringify(locations));
+    // sessionStorage.setItem('transportationTypes', JSON.stringify(transport));
   }, []);
 
   // useEffect(() => {
