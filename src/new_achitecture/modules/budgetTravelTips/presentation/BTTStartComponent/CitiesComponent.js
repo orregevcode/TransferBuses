@@ -1,8 +1,10 @@
 import React from 'react';
 import cities_json from '../../data/cities-fullList.json';
-import styles from './CitiesComponent.module.css'
+import styles from './CitiesComponent.module.css';
+import {BASE_REDIRECT_URL} from "../../data/constants";
 import {Link} from "react-router-dom";
 import {TRAVEL_TIPS_DESCRIPTION} from "../../../trip_search/domain/entites/utils/constants/constants";
+import {Container} from "@material-ui/core";
 
 const Cities = () => {
     const sortCities = cities_json.sort((a, b) => {
@@ -14,9 +16,10 @@ const Cities = () => {
         }
         return 0;
     })
-    const goToCity = (path) => {
-        //useNavigate(path)
+    const createRedirectURL = (name) => {
+        return BASE_REDIRECT_URL + name.toLowerCase().replace(/[\s-]/g, '_');
     }
+
     return (
         <div>
             <hr className={styles.ruler}/>
@@ -26,15 +29,16 @@ const Cities = () => {
                 <ul className={styles.cityList}>
                     {sortCities.map((item, key) => (
                         <li className={styles.list} key={key}>
-                            {/*<Link to={`${TRAVEL_TIPS_DESCRIPTION}/${item.name}`}>*/}
-                            {/*    {item.name}*/}
-                            {/*</Link>*/}
-                            <Link to={TRAVEL_TIPS_DESCRIPTION}>
+                            <a className={styles.anchor}
+                               href={`${createRedirectURL(item.name)}`}>
                                 {item.name}
-                            </Link>
+                            </a>
                         </li>
                     ))}
                 </ul>
+
+            {/*<div className={styles.mainContainer}>*/}
+                
             </div>
         </div>
     );

@@ -1,5 +1,3 @@
-import { Calculate } from '@mui/icons-material';
-
 const resultStyle = {
   lg: {
     inline: {
@@ -60,11 +58,11 @@ const resultStyle = {
       margin: '0 2px',
     },
     transportIcons: {
-      width: '70px',
+      //width: '70px',
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      //justifyContent: 'center',
     },
     sortMenu: {
       paddingLeft: '24px',
@@ -88,6 +86,16 @@ const resultStyle = {
       padding: '0 2px',
     },
     btnByTicket: {},
+    routeContainer:{
+      display:'flex',
+      flexDirection:'column',
+      width: '100%'
+    },
+    regularFont:{
+      fontStyle: 'italic',
+      fontSize:'1rem',
+      padding: '0 2px',
+    },
   },
   sm: {
     inline: {
@@ -103,36 +111,42 @@ const resultStyle = {
       flexDirection: 'column',
       flex: 1,
       justifyContent: 'flex-start',
-      marginTop: 8,
+      marginTop: 4,
       borderRadius: 5,
       borderColor: 'grey',
       borderWidth: 1,
       paddingVertical: 2.5,
+      fontSize: '0.8rem'
     },
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
       width: '100%',
       marginRight: 13,
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       paddingHorizontal: 4,
-      paddingBottom: 8,
+
+      fontSize: '1rem',
+      marginTop: 8
     },
     time: {
-      color: 'grey',
-      marginLeft: 5,
-      fontSize: '0.8rem',
+      color: 'black',
+      marginLeft: 8,
+      fontSize: '1rem',
+      fontWeight:400
     },
     price: {
       color: '#fff',
-      fontSize: '0.8rem',
+      fontSize: '1rem',
     },
     priceContainer: {
       backgroundColor: '#ff6721',
-      padding: 3,
-      borderRadius: 5,
+      padding: '4px 8px 4px 8px',
+      borderRadius: '0 5px 0 5px',
       display: 'inline-block',
+      marginLeft: '-16px',
+
     },
     icon: {
       margin: 0,
@@ -148,11 +162,11 @@ const resultStyle = {
       margin: 0,
     },
     transportIcons: {
-      width: '70px',
+
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     sortMenu: {
       paddingLeft: '24px',
@@ -165,10 +179,15 @@ const resultStyle = {
       color: '#607D8B',
     },
     routeCard: {
-      marginTop: '20px',
+      marginTop: '70px',
     },
     italicFont: {
       fontStyle: 'italic',
+      padding: '0 2px',
+    },
+    regularFont:{
+      fontStyle: 'default',
+      fontSize:'0.9rem',
       padding: '0 2px',
     },
     arrowStyle: {
@@ -176,6 +195,10 @@ const resultStyle = {
       padding: '0 2px',
     },
     btnByTicket: {},
+    routeContainer:{
+      display:'flex',
+      flexDirection:'column'
+    }
   },
 };
 const resultItemStyle = {

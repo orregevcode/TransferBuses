@@ -3,7 +3,6 @@
 * {
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
-    /*line-height: 1.6rem;*/
 }
 
 .ruler {
@@ -22,6 +21,11 @@
     color: #4f4f4f;
 }
 
+.anchor{
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    color: inherit; /* Наследуем цвет текста от родительского элемента */
+}
+
 .cityList {
     width: 100%;
     margin: 0;
@@ -35,12 +39,16 @@
     align-items: center;
 }
 
-.list a{
+.list a {
     color: #ff5722;
-    /*font-size: 1.23em;*/
     line-height: 1.6;
 }
 
-.list:hover a{
+.list:hover a {
     cursor: pointer;
+}
+
+@media (max-width: 1440px ) {
+    .mainContainer {
+    }
 }

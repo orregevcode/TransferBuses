@@ -37,6 +37,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls='panel1a-content'
                 id='panel1a-header'
+
               >
                 {travelInfo && travelInfo.length !== 0 && (
                   <Box style={style.transportIcons}>
@@ -70,12 +71,14 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                         <span style={style.italicFont}>{route['direct_paths'][route['direct_paths'].length - 1].to}</span>}
                   </Typography>
                   <Box style={style.bottomContainer}>
-                    <Typography style={style.time}>{timeTravel}</Typography>
                     <Box style={style.priceContainer}>
                       <Typography style={style.price}>{price}</Typography>
                     </Box>
+                    <Typography style={style.time}>{timeTravel}</Typography>
                   </Box>
                 </Box>
+              </div>
+
               </AccordionSummary>
               <AccordionDetails>
                 <div>

@@ -126,7 +126,6 @@ export default function CarrierComponent() {
                 })
             );
 
-            // console.log("weekdays: ", weekDays);
             props.setFieldValue('regularTripsDays', weekDays);
           };
 

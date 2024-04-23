@@ -15,10 +15,6 @@ import IconButton from "@mui/material/IconButton";
 import {ListItemText} from "@mui/material";
 
 const Header = () => {
-    // refactor to redux
-    const [logo, setLogo] = useState("CheapTrip");
-    const {pathname} = useLocation();
-    const classes = useStyles();
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -29,22 +25,11 @@ const Header = () => {
         setAnchorEl(null)
     }
 
-    const ROUTES = [
-        {name: 'contacts', path: CONTACTS_ROUTE},
-        {name: 'TransferBuses', path: PASSENGER_ROUTE},
-    ]
     const closeHandler = path => {
         history.push(path);
         closeMenu();
     }
-    const underHeader = () => {
-        if (pathname === MAIN_ROUTE || pathname === CONTACTS_ROUTE) {
-            return <div className={css.tipsUnderHeader}><Link to={'/budgetTravelTips'} className={css.Link_tips}>Budget
-                travel tips &gt;&gt;
-            </Link></div>;
-        }
-        return <></>;
-    }
+
     return (
         <AppBar className={css.appbar} elevation={0}>
             <Toolbar className={css.navbar}>
@@ -88,11 +73,11 @@ const Header = () => {
                         onClose={closeMenu}
                         anchorEl={anchorEl}
                         keepMounted
-                        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-                        transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                        // anchorOrigin={{vertical: null, horizontal: 'right'}}
+                        // transformOrigin={{vertical: 'top', horizontal: 'right'}}
                     >
                         <MenuList>
-                            <MenuItem className={css.burgerText} button key={CONTACTS_ROUTE}>
+                            <MenuItem className={css.burgerText} button key={MAIN_ROUTE}>
                                 <ListItemText
                                     primary={"Cheap Trip"}
                                     onClick={() => closeHandler(MAIN_ROUTE)}
@@ -123,12 +108,3 @@ const Header = () => {
 }
 
 export default Header;
-
-
-
-
-
-
-
-
-

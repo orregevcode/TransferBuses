@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
+import {getRoutes} from "../../data/api/trip_search_data";
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
@@ -96,19 +97,6 @@ const useCheapTripSearch = () => {
     setIsClean(true);
   };
 
-  const getRoutes = async () => {
-    const requestOptions = {
-      method: 'POST',
-      redirect: 'follow',
-    };
-
-    return fetch(`http://localhost:3010/${fromKey}/${toKey}`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        return result;
-      })
-      .catch((error) => console.error(error));
-  };
 
   const submit = async () => {
     if (to === '') {
@@ -116,7 +104,8 @@ const useCheapTripSearch = () => {
       setToKey('0');
     }
     console.log(fromKey + ' ' + toKey);
-    const routes = await getRoutes();
+    /*const routes = await getRoutes();*/
+      const filteredByTo = getRoutes(fromKey, toKey);
     const sortedRoutes = sortByPrice(routes['route_data']);
     setSelectedRoutesKeys(sortedRoutes);
   };

@@ -1,4 +1,5 @@
 import React, { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Button } from '@material-ui/core';
 import useCheapTripSearch from '../../hooks/useCheapTripSearch';
 import s from './../../../domain/entites/CheapTripSearch/cheaptrip.module.css';
@@ -38,6 +39,7 @@ const SearchForm = memo(() => {
   const handleCleanForm = () => {
     cleanForm();
     handleSetIsClean(true);
+    handleSetIsClean(true);
   };
   const handleSubmit = () => {
     submit();
@@ -61,6 +63,8 @@ const SearchForm = memo(() => {
             handleClearInputValue={'from'}
             isClean={isClean}
             handleSetIsClean={handleSetIsClean}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
           />
         </div>
         <DoubleArrowIcon className={classes.media_icon} />
@@ -73,6 +77,8 @@ const SearchForm = memo(() => {
             inputStyle={inputToStyle}
             handleClearInput={handleClearInput}
             handleClearInputValue={'to'}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
             isClean={isClean}
             handleSetIsClean={handleSetIsClean}
           />
