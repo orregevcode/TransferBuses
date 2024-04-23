@@ -14,7 +14,7 @@ export async function getRoutes(fromId, toId) {
     }
 }
 
-export async function getLocations(fromId, toId) {
+export async function getLocations() {
     const res = await instance.get('service/locations');
     return res;
 }
