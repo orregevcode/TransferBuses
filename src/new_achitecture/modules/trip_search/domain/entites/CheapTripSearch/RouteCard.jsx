@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import locations from '../..//../data/jsons/cheapTripData/locations.json';
+import React, {useEffect, useState} from 'react';
+// import locations from '../..//../data/jsons/cheapTripData/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,8 +9,10 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
+import {getLocations} from "../../../data/api/trip_search_data";
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
+  const [locations, setLocations] = useState(null);
   const {
     style,
     timeTravel,
@@ -21,7 +23,14 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
   } = useRouteCard(route);
   const price = priceTravel + '.00';
 
+  const getLocationsLocal = async () => {
+    const temp = await getLocations();
+    const loc = temp.data
+    setLocations(loc);
+  }
+
   useEffect(() => {
+    getLocationsLocal();
     if (setIsSearchListIsOpen) {
       setIsSearchListIsOpen(true);
     }
