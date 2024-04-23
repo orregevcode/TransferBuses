@@ -9,7 +9,7 @@ import {
   HOSTEL_WORLD_AFFILIATE,
 } from '../utils/constants/links';
 
-function TravelInfo({ travelInfo, timeTravel, price }) {
+function TravelInfo({ travelInfo, timeTravel }) {
   const {
     style,
     lessThan480,

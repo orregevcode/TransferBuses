@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import locations from '../../data/jsons/cheapTripData/locations.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
@@ -144,7 +144,7 @@ const useCheapTripSearch = () => {
       (route1, route2) => route1['euro_price'] - route2['euro_price']
     );
   };
-  const cleanSearchForm = (value) => {
+  const cleanSearchForm = () => {
     setIsClean(false);
   };
 

@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
-import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
   const {
