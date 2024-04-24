@@ -1,0 +1,1 @@
+This is a directory where data of partly jsons are stored

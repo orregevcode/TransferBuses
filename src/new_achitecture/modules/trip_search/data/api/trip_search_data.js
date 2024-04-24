@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://express-example-kj10.onrender.com/',
+    baseURL: 'https://express-example-kj10.onrender.com/', // todo change to the correct link
     timeout: 50000
 });
 
