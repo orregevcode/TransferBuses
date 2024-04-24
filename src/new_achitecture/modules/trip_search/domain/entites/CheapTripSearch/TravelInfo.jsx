@@ -1,32 +1,30 @@
-import React from 'react';
-import locations from '../../../data/jsons/cheapTripData/locations.json';
+import React, {useEffect, useState} from 'react';
+// import locations from '../../../data/jsons/cheapTripData/locations.json';
 import { Box, Button, Link, Typography } from '@material-ui/core';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Modal from '@mui/material/Modal';
-import s from './cheaptrip.module.css';
 import useTravelInfo from '../../../presentation/hooks/useTravelInfo';
 import {
   BOOKING_AFFILIATE,
   BUY_TICKET_AFFILIATE,
   HOSTEL_WORLD_AFFILIATE,
 } from '../utils/constants/links';
+import {getLocations} from "../../../data/api/trip_search_data";
 
 function TravelInfo({ travelInfo, timeTravel }) {
+  const [locations, setLocations] = useState(null);
   const {
     style,
     lessThan480,
-    additionalInfoOpened,
-    additionalInformation,
-    setAddInfoOpen,
   } = useTravelInfo(travelInfo);
 
-  const handleOpenInfo = () => {
-    setAddInfoOpen();
-  };
-
-  const priceOutput = (price) => {
-    return '€ ' + price + '.00';
-  };
+  const getLocationsLocal = async () => {
+    const temp = await getLocations();
+    const loc = temp.data
+    setLocations(loc);
+  }
+  useEffect(() => {
+    getLocationsLocal();
+  }, []);
 
   return (
     <div>
@@ -35,26 +33,25 @@ function TravelInfo({ travelInfo, timeTravel }) {
           <Box style={style.itemContainer}>
             <Box style={style.directions}>
               <Typography style={{ ...style.boldText, ...style.directionText }}>
-                {locations[travelInfo.from] && (
+                {travelInfo.route.from && (
                   <span style={{ padding: '0 2px' }}>
-                    {locations[travelInfo.from].name}
+                    {travelInfo.route.from.name}
                   </span>
                 )}
                 <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
-                {locations[travelInfo.to] && (
+                {travelInfo.route.to && (
                   <span style={{ padding: '0 2px' }}>
-                    {locations[travelInfo.to].name}
+                    {travelInfo.route.to.name}
                   </span>
                 )}
               </Typography>
-              {/*{defineIconOfTransport(data.transportation_type)}*/}
-              <span>Flight</span>
+              <span>{travelInfo.route[`transportation_type`].name}</span>
             </Box>
             <Box style={style.directions}>
               {!lessThan480 ? (
                 <>
                   <Typography sx={{ color: 'rgb(119, 87, 80)' }}>
-                    {timeTravel(travelInfo.duration)}
+                    {timeTravel(travelInfo.duration_minutes)}
                   </Typography>
                   <Box style={style.btnByTicket}>
                     <Link
@@ -98,7 +95,7 @@ function TravelInfo({ travelInfo, timeTravel }) {
                     </Link>
                   </Box>
                   <Typography style={style.price}>
-                    {priceOutput(travelInfo.price)}
+                    {`€ ${travelInfo.route['euro_price']}.00`}
                   </Typography>
                 </>
               ) : (
@@ -106,10 +103,10 @@ function TravelInfo({ travelInfo, timeTravel }) {
                   <Box style={{ width: '100%' }}>
                     <Box style={style.resultStyleBottom}>
                       <Typography sx={{ color: 'rgb(119, 87, 80)' }}>
-                        {timeTravel(travelInfo.duration)}
+                        {timeTravel(travelInfo.duration_minutes)}
                       </Typography>
                       <Typography style={style.price}>
-                        {priceOutput(travelInfo.price)}
+                        {`€ ${travelInfo.route['euro_price']}.00`}
                       </Typography>
                     </Box>
                     <Box
@@ -161,7 +158,7 @@ function TravelInfo({ travelInfo, timeTravel }) {
             </Box>
           </Box>
 
-          {additionalInformation && additionalInfoOpened && (
+          {/* {additionalInformation && additionalInfoOpened && (
             <Modal
               open={additionalInfoOpened}
               onClose={handleOpenInfo}
@@ -201,7 +198,7 @@ function TravelInfo({ travelInfo, timeTravel }) {
                 )}
               </div>
             </Modal>
-          )}
+          )} */}
         </>
       ) : (
         <div>Loading</div>

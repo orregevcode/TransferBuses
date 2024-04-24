@@ -9,6 +9,7 @@ import {
   clearIconStyles,
 } from './../searchFormStyles';
 import ClearIcon from '@material-ui/icons/Clear';
+import useCheapTripSearch from '../../../hooks/useCheapTripSearch';
 
 const AutocompleteEl = ({
   value,

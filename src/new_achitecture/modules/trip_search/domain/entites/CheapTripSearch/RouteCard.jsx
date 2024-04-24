@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import locations from '../..//../data/jsons/cheapTripData/locations.json';
+import React, {useEffect, useState} from 'react';
+// import locations from '../..//../data/jsons/cheapTripData/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,17 +9,32 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
-import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import {getLocations} from "../../../data/api/trip_search_data";
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
-  const { style, timeTravel, priceTravel, travelInfo, calculateTravelTime } = useRouteCard(route);
+  const [locations, setLocations] = useState(null);
+  const {
+    style,
+    timeTravel,
+    priceTravel,
+    travelInfo,
+    calculateTravelTime,
+    selectTransportIcon,
+  } = useRouteCard(route);
   const price = priceTravel + '.00';
 
+  const getLocationsLocal = async () => {
+    const temp = await getLocations();
+    const loc = temp.data
+    setLocations(loc);
+  }
+
   useEffect(() => {
+    getLocationsLocal();
     if (setIsSearchListIsOpen) {
       setIsSearchListIsOpen(true);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -31,36 +46,49 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls='panel1a-content'
                 id='panel1a-header'
-
               >
-                <div style={style.routeContainer}>
-                {travelInfo &&
-                    travelInfo.length !== 0 &&
-                    <Box style={style.transportIcons}>
-                      {travelInfo.map((item, index) => (
-                          <Box style={style.airplaneBox} key={index}>
-                            <AirplanemodeActiveIcon sx={style.airplaneIcon}  />
-                          </Box>
-                      ))}
-                    </Box>}
+                {travelInfo && travelInfo.length !== 0 && (
+                  <Box style={style.transportIcons}>
+                    {travelInfo.map((item, index) => (
+                      <Box style={style.airplaneBox} key={index}>
+                        {selectTransportIcon(
+                          item.route['transportation_type'].name,
+                          style.airplaneIcon
+                        )}
+                      </Box>
+                    ))}
+                  </Box>
+                )}
                 <Box style={style.box}>
                   <Typography>
-                    {travelInfo && travelInfo.length !== 0 && travelInfo.map((travelInformation, index) => (
-                        <React.Fragment key={travelInformation.to}>
-                          {index !== 0 && <ArrowForwardIcon
-                              fontSize='small'
-                              sx={style.arrowStyle}
-                          />}
-                          <span style={style.regularFont}>{locations[travelInformation.from].name}</span>
-                        </React.Fragment>
-                    ))}
-                    <ArrowForwardIcon
-                        fontSize='small'
-                        sx={style.arrowStyle}
-                    />
-                    {locations[route.to] && (
-                        <span style={style.regularFont}>{locations[route.to].name}</span>
-                    )}
+                    {travelInfo &&
+                      travelInfo.length !== 0 &&
+                      travelInfo.map((travelInformation, index) => (
+                        <span key={index}>
+                          <React.Fragment key={index}>
+                            {index !== 0 && (
+                              <ArrowForwardIcon
+                                fontSize='small'
+                                sx={style.arrowStyle}
+                              />
+                            )}
+                            <span style={style.italicFont}>
+                              {travelInformation.route.from.name}
+                            </span>
+                          </React.Fragment>
+                        </span>
+                      ))}
+                    <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
+                    {route['direct_paths'] &&
+                      route['direct_paths'].length > 0 && (
+                        <span style={style.italicFont}>
+                          {
+                            route['direct_paths'][
+                              route['direct_paths'].length - 1
+                            ].to.name
+                          }
+                        </span>
+                      )}{' '}
                   </Typography>
                   <Box style={style.bottomContainer}>
                     <Box style={style.priceContainer}>
@@ -69,19 +97,21 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
                     <Typography style={style.time}>{timeTravel}</Typography>
                   </Box>
                 </Box>
-              </div>
-
               </AccordionSummary>
               <AccordionDetails>
                 <div>
                   {travelInfo &&
                     travelInfo.length !== 0 &&
-                    travelInfo.map((travelInformation) => (
+                    travelInfo.map((travelInformation, index) => (
                       <TravelInfo
                         travelInfo={travelInformation}
-                        key={travelInformation.to}
-                        price={priceTravel}
-                        timeTravel={calculateTravelTime}
+                        key={index}
+                        price={price}
+                        timeTravel={() =>
+                          calculateTravelTime(
+                            travelInformation.route[`duration_minutes`]
+                          )
+                        }
                       />
                     ))}
                 </div>

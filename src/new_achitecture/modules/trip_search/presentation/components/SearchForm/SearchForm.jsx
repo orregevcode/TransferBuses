@@ -22,6 +22,8 @@ const SearchForm = memo(() => {
     clearToField,
   } = useCheapTripSearch();
 
+  const [isClean, setIsClean] = useState(false);
+
   const handleSelectFrom = (value) => {
     selectFrom(value);
   };
@@ -36,12 +38,12 @@ const SearchForm = memo(() => {
   const handleCleanForm = () => {
     cleanForm();
     handleSetIsClean(true);
+    handleSetIsClean(true);
   };
   const handleSubmit = () => {
     submit();
   };
 
-  const [isClean, setIsClean] = useState(false);
   const handleSetIsClean = (value) => {
     setIsClean(value);
   };
@@ -60,6 +62,8 @@ const SearchForm = memo(() => {
             handleClearInputValue={'from'}
             isClean={isClean}
             handleSetIsClean={handleSetIsClean}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
           />
         </div>
         <DoubleArrowIcon className={classes.media_icon} />
@@ -72,6 +76,8 @@ const SearchForm = memo(() => {
             inputStyle={inputToStyle}
             handleClearInput={handleClearInput}
             handleClearInputValue={'to'}
+            isClean={isClean}
+            handleSetIsClean={handleSetIsClean}
             isClean={isClean}
             handleSetIsClean={handleSetIsClean}
           />
