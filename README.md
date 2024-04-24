@@ -18,5 +18,15 @@
 
 ---
 
+### Please delete old files when deploying to AWS S3
 
-### # `Please delete old files when deploying to AWS S3`
+---
+
+### Server installation
+---
+All sources for express server is in express folder.
+Create new empty project and copy all sources from express folder.
+Install all dependencies with `npm install`.
+Move all JSON files to data and partly folders.
+Run with `npm run start`.
+Edit corsOption.origin for enable some front end domain (ex. http://localhost:3000)
