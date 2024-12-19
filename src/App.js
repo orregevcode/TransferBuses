@@ -9,7 +9,7 @@ import useChangeLanguage from './new_achitecture/general/hooks/useChangeLanguage
 import { useLocation } from 'react-router';
 import PlayStoreModal from './new_achitecture/general/components/PlayStoreModal/PlayStoreModal';
 import usePlayStoreModal from './new_achitecture/general/hooks/usePlayStoreModal';
-// import locations from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/locations.json';
+// import location from './new_achitecture/modules/trip_search/data/jsons/location.json' 
 // import transport from './new_achitecture/modules/trip_search/data/jsons/cheapTripData/transport.json';
 function App() {
   const { i18n, lang } = useChangeLanguage();
