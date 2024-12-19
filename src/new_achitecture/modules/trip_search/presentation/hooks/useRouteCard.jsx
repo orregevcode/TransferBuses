@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { resultStyle } from '../components/searchResult/style';
 import { useMediaQuery } from '@material-ui/core';
-// import directRoutes from '../../data/jsons/cheapTripData/direct_routes.json';
+import directroutes from '../../data/jsons/direct_routes.json';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
@@ -32,6 +32,8 @@ const useRouteCard = (route) => {
     displayTime += ` ${minutes}min`;
     return displayTime;
   };
+
+
 
   const timeTravel = calculateTravelTime(route['duration_minutes']);
   const priceTravel = `€ ${route[`euro_price`]}`;
@@ -79,8 +81,7 @@ const useRouteCard = (route) => {
         return <QuestionMarkIcon sx={style} />;
     }
   };
-
-  return {
+ return {
     style,
     timeTravel,
     priceTravel,

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-// import locations from '../../../data/jsons/cheapTripData/locations.json';
+//  import locations from '../../../data/jsons/cheapTripData/locations.json';
 import { Box, Button, Link, Typography } from '@material-ui/core';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import useTravelInfo from '../../../presentation/hooks/useTravelInfo';

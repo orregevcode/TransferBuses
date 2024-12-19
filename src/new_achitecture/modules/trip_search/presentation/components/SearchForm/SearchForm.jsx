@@ -8,7 +8,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import AutocompleteEl from './AutocompleteEl/AutocompleteEl';
 import { inputFromStyle, inputToStyle } from './searchFormStyles';
 
-const SearchForm = memo(() => {
+const SearchForm = (() => {
   const {
     from,
     selectFrom,
@@ -22,7 +22,11 @@ const SearchForm = memo(() => {
     clearToField,
   } = useCheapTripSearch();
 
+
+
   const [isClean, setIsClean] = useState(false);
+
+   
 
   const handleSelectFrom = (value) => {
     selectFrom(value);
@@ -48,6 +52,10 @@ const SearchForm = memo(() => {
     setIsClean(value);
   };
 
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+
   return (
     <>
       <form action='' className={s.autocomplete}>
@@ -71,7 +79,7 @@ const SearchForm = memo(() => {
           <AutocompleteEl
             value={to || null}
             handleChange={handleSelectTo}
-            options={checkToOption}
+            options={checkFromOption }
             textFieldLabel={'To'}
             inputStyle={inputToStyle}
             handleClearInput={handleClearInput}

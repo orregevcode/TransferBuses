@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-// import locations from '../..//../data/jsons/cheapTripData/locations.json';
+import location from '../../../data/jsons/locations.json';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import locations from '../../data/jsons/cheapTripData/locations.json';
+import location from '../../data/jsons/locations.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
@@ -20,6 +20,7 @@ const useCheapTripSearch = () => {
   const { filterBy, filteredRoutes } = useSelector((state) => {
     return state.cheapTripSearch;
   });
+
   const dispatch = useDispatch();
 
   const style = useMediaQuery('(max-width:650px)')
@@ -94,6 +95,7 @@ const useCheapTripSearch = () => {
           }),
       ]
     : [];
+    console.log('locationsKeysSorted:', locationsKeysSorted);
 
   const cleanForm = () => {
     setFrom('');
@@ -119,6 +121,7 @@ const useCheapTripSearch = () => {
       setTo('Anywhere');
       setToKey('0');
     }
+    console.log(submit);
 
     const routes = await getRoutesLocal();
     const sortedRoutes = sortByPrice(routes);
