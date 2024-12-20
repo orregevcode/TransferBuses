@@ -15,7 +15,7 @@ const RoutesList = ({list, cityFrom}) => {
             setId(event.target.id)
             setClicked(!clicked)
         } else {
-            // console.log(id);
+            console.log(id);
             setId('')
             setId(event.target.id);
             setClicked(!clicked)

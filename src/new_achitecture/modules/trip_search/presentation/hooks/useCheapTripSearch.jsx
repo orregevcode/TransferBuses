@@ -1,55 +1,48 @@
 import { useState, useEffect } from 'react';
-import location from '../../data/jsons/locations.json';
+import locationsData from '../../data/jsons/locations.json'; // Import your local JSON file
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
 import { resultStyle } from '../components/searchResult/style';
-import {getLocations, getRoutes} from '../../data/api/trip_search_data';
 
 const useCheapTripSearch = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [fromKey, setFromKey] = useState(null);
   const [toKey, setToKey] = useState('');
-  const [asyncFromOptions, setAsyncFromOptions] = useState([]);
-  const [asyncToOptions, setAsyncToOptions] = useState([]);
   const [selectedRoutesKeys, setSelectedRoutesKeys] = useState(null);
-  const [isClean, setIsClean] = useState(false);
-  const [locations, setLocations] = useState();
+  const [locations, setLocations] = useState([]);
   const [locationsKeysSorted, setLocationsKeySorted] = useState([]);
-  const { filterBy, filteredRoutes } = useSelector((state) => {
-    return state.cheapTripSearch;
-  });
-
+  const { filteredRoutes } = useSelector((state) => state.cheapTripSearch);
   const dispatch = useDispatch();
 
-  const style = useMediaQuery('(max-width:650px)')
-    ? resultStyle.sm
-    : resultStyle.lg;
+  const style = useMediaQuery('(max-width:650px)') ? resultStyle.sm : resultStyle.lg;
 
-  const PAGINATION_LIMIT = 10;
+  // Transform local JSON data into a more usable format
+  const transformLocations = (locData) => {
+    return Object.keys(locData).map((key) => ({
+      name: locData[key]?.name || 'Unnamed Location', // Provide default values if data is missing
+      latitude: locData[key]?.latitude || null,
+      longitude: locData[key]?.longitude || null,
+      country_name: locData[key]?.country_name || 'Unknown',
+      id: key,
+    }));
+  };
 
-  const getLocationsLocal = async () => {
-    const temp = await getLocations();
-    const loc = temp.data
-    setLocations(loc);
-    setLocationsKeySorted((prevState) => {
-      if (!loc) return prevState;
-      return Object.keys(loc).sort((a, b) => {
-        return loc[a].name > loc[b].name ? 1 : -1;
-      });
-    });
-  }
-
-
+  // Initialize locations state with the imported JSON data
   useEffect(() => {
-    getLocationsLocal();
-  }, []);
+    if (locationsData) {
+      const transformedLoc = transformLocations(locationsData);
+      setLocations(transformedLoc);
+      setLocationsKeySorted(transformedLoc.sort((a, b) => a.name.localeCompare(b.name)));
+    }
+  }, []); // This will only run once when the component is mounted
 
   const clearFromField = () => {
     setFrom('');
-    setFromKey('');
+    setFromKey(null);
   };
+
   const clearToField = () => {
     setTo('');
     setToKey('');
@@ -57,72 +50,56 @@ const useCheapTripSearch = () => {
 
   const fromOptions = locationsKeysSorted
     ? locationsKeysSorted
-        .map((key) => ({
-          label: locations[key].name,
-          key: key,
+        .map((loc) => ({
+          label: loc.name,
+          key: loc.id,
         }))
-        .sort((a, b) => {
-          const aName = a.label.toUpperCase();
-          const bName = b.label.toUpperCase();
-          if (aName < bName) {
-            return -1;
-          }
-          if (aName > bName) {
-            return 1;
-          }
-          return 0;
-        })
+        .sort((a, b) => a.label.localeCompare(b.label))
     : [];
 
   const toOptions = locationsKeysSorted
     ? [
         { label: 'Anywhere', key: '0' },
         ...locationsKeysSorted
-          .map((key) => ({
-            label: key !== '0' ? locations[key].name : '',
-            key: key,
+          .map((loc) => ({
+            label: loc.name,
+            key: loc.id,
           }))
-          .sort((a, b) => {
-            const aName = a.label.toUpperCase();
-            const bName = b.label.toUpperCase();
-            if (aName < bName) {
-              return -1;
-            }
-            if (aName > bName) {
-              return 1;
-            }
-            return 0;
-          }),
+          .sort((a, b) => a.label.localeCompare(b.label)),
       ]
     : [];
-    console.log('locationsKeysSorted:', locationsKeysSorted);
+
+  // Log locations to ensure they are loaded correctly
+  useEffect(() => {
+    console.log('Locations:', locations);
+    if (locations && locations.length > 0) {
+      console.log('From Options:', fromOptions);
+      console.log('To Options:', toOptions);
+    }
+  }, [locations, locationsKeysSorted]);
 
   const cleanForm = () => {
     setFrom('');
     setTo('');
-    setFromKey('');
+    setFromKey(null);
     setToKey('');
     setSelectedRoutesKeys(null);
-    setIsClean(true);
-    setIsClean(true);
   };
 
-  const getRoutesLocal = async () => {
-    const routes = await getRoutes(fromKey, toKey);
-    return routes.data;
-    // fetch(`http://localhost:3000/routes/${fromKey}/${toKey}`, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((result) => result)
-    //   .catch((error) => console.error(error));
+  // Sort routes by price (mocking it here)
+  const sortByPrice = (arr) => {
+    return arr.sort((route1, route2) => route1['euro_price'] - route2['euro_price']);
   };
 
+  // Submit function to get routes based on the selected "from" and "to"
   const submit = async () => {
+    // Default "to" to 'Anywhere' if not set
     if (to === '') {
       setTo('Anywhere');
       setToKey('0');
     }
-    console.log(submit);
 
+    // Mock route fetching (replace with actual API call)
     const routes = await getRoutesLocal();
     const sortedRoutes = sortByPrice(routes);
     setSelectedRoutesKeys(sortedRoutes);
@@ -132,52 +109,28 @@ const useCheapTripSearch = () => {
     if (selectedRoutesKeys) {
       dispatch(setFilteredRoutes(selectedRoutesKeys));
     }
-  }, [selectedRoutesKeys]);
+  }, [selectedRoutesKeys, dispatch]);
 
-  const checkFromOption =
-    asyncFromOptions.length !== 0 ? asyncFromOptions : fromOptions;
-  const checkToOption =
-    asyncToOptions.length !== 0 ? asyncToOptions : toOptions;
-
-  const selectFrom = (value) => {
-    setFrom(value.label);
-    setFromKey(value.key);
-  };
-
-  const selectTo = (value) => {
-    setTo(value.label);
-    setToKey(value.key);
-  };
-
-  const sortByPrice = (arr) => {
-    const allRoutes = [...arr];
-    return allRoutes.sort(
-      (route1, route2) => route1['euro_price'] - route2['euro_price']
-    );
-  };
-  const cleanSearchForm = () => {
-    setIsClean(false);
+  const getRoutesLocal = async () => {
+    // This function should fetch the routes based on "from" and "to"
+    // Use your own API logic here
+    return [
+      { euro_price: 100, route: 'Route 1' },
+      { euro_price: 150, route: 'Route 2' },
+      { euro_price: 90, route: 'Route 3' },
+    ]; // Mock response
   };
 
   return {
     from,
-    selectFrom,
-    selectTo,
-    checkFromOption,
-    to,
-    checkToOption,
+    selectFrom: (value) => { setFrom(value.label); setFromKey(value.key); },
+    selectTo: (value) => { setTo(value.label); setToKey(value.key); },
+    checkFromOption: fromOptions,
+    checkToOption: toOptions,
     cleanForm,
-    submit,
-    // routes,
     filteredRoutes,
-    PAGINATION_LIMIT,
-    sortByPrice,
-    filterBy,
-    clearFromField,
-    clearToField,
     style,
-    isClean,
-    cleanSearchForm,
+    submit,
   };
 };
 
