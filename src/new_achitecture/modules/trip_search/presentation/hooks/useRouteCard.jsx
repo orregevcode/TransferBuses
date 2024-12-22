@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { resultStyle } from '../components/searchResult/style';
 import { useMediaQuery } from '@material-ui/core';
-import directroutes from '../../data/jsons/direct_routes.json';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
@@ -16,9 +15,8 @@ import SubwayIcon from '@mui/icons-material/Subway';
 
 const useRouteCard = (route) => {
   const [travelInfo, setTravelInfo] = useState(null);
-  const style = useMediaQuery('(max-width:650px)')
-    ? resultStyle.sm
-    : resultStyle.lg;
+  const style = useMediaQuery('(max-width:650px)') ? resultStyle.sm : resultStyle.lg;
+
   const calculateTravelTime = (duration) => {
     if (!duration) return;
     const days = Math.floor(duration / (24 * 60));
@@ -33,23 +31,21 @@ const useRouteCard = (route) => {
     return displayTime;
   };
 
+  const timeTravel = calculateTravelTime(route?.['duration_minutes']);
+  const priceTravel = `€ ${route?.['euro_price'] || 0}`;
 
-
-  const timeTravel = calculateTravelTime(route['duration_minutes']);
-  const priceTravel = `€ ${route[`euro_price`]}`;
-
-  
   useEffect(() => {
-    // if (!directRoutes) return;
-    let tempKeys = route['direct_paths'];
-    let temp = [];
-    tempKeys.forEach((route) => {
-      const routeItem = {
-        route: route,
-        // ...directRoutes[key],
-      };
-      temp.push(routeItem);
-    });
+    // Ensure route and direct_paths exist and are arrays
+    const tempKeys = route?.['direct_paths'];
+    if (!Array.isArray(tempKeys)) {
+      console.warn('direct_paths is not an array or is undefined:', tempKeys);
+      setTravelInfo([]);
+      return;
+    }
+
+    const temp = tempKeys.map((route) => ({
+      route,
+    }));
     setTravelInfo(temp);
   }, [route]);
 
@@ -81,7 +77,8 @@ const useRouteCard = (route) => {
         return <QuestionMarkIcon sx={style} />;
     }
   };
- return {
+
+  return {
     style,
     timeTravel,
     priceTravel,

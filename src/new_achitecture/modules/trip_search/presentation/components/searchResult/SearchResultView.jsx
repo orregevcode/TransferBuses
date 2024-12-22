@@ -10,29 +10,28 @@ import { Box } from '@material-ui/core';
 import useSearchResult from '../../hooks/useSearchResult';
 
 export default function SearchResultView({ city, cityFrom, cityTo, data }) {
-  const {
-    largeTransportIcon,
-    style,
-    timeTravel,
-    priceTravel,
-  } = useSearchResult(data);
+  // Fetch processed data from the hook
+  const { largeTransportIcon, style, timeTravel, priceTravel } = useSearchResult(data);
+
+  // Handle loading or invalid data
+  if (!data || !largeTransportIcon || !timeTravel || !priceTravel) {
+    return <Typography>Loading...</Typography>; // Show "Loading..." if data is missing
+  }
 
   return (
     <div style={{ marginTop: '20px' }}>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
+          aria-controls="panel1a-content"
+          id="panel1a-header"
         >
           <Box style={style.box}>
-            <Box style={style.inline}>
-              {largeTransportIcon}
-            </Box>
+            <Box style={style.inline}>{largeTransportIcon}</Box>
             <Typography>
               {cityFrom}
               <ArrowForwardIcon
-                fontSize='small'
+                fontSize="small"
                 sx={{ verticalAlign: 'text-bottom' }}
               />
               {cityTo}
