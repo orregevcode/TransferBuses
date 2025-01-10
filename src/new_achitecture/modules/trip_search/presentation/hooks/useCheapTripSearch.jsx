@@ -98,59 +98,53 @@ const useCheapTripSearch = () => {
   // Updated findRoutes function to handle all route types
   const findRoutes = (fromId, toId) => {
     console.log('Searching routes from:', fromId, 'to:', toId);
-
     const matchingRoutes = [];
+
+    // Helper function to process routes
+    const processRoute = (route, paths) => {
+      const segments = paths.map(path => ({
+        from: locationsData[path.from],
+        to: locationsData[path.to],
+        duration_minutes: path.duration,
+        euro_price: path.price,
+        transportation_type: transportTypes[path.transport || 1]
+      }));
+
+      // Calculate total duration and price
+      const totalDuration = segments.reduce((sum, seg) => sum + seg.duration_minutes, 0);
+      const totalPrice = segments.reduce((sum, seg) => sum + seg.euro_price, 0);
+
+      return {
+        ...route,
+        trip_duration: totalDuration,
+        euro_price: totalPrice,
+        direct_paths: segments
+      };
+    };
 
     // Process direct routes
     Object.entries(directRoutes).forEach(([key, route]) => {
-      if (route && route.from.toString() === fromId && 
-          (toId === '0' || route.to.toString() === toId)) {
-        matchingRoutes.push({
-          ...route,
-          id: key,
-          type: 'direct',
-          from: locationsData[route.from],
-          to: locationsData[route.to],
-          direct_paths: [{ ...route, transportation_type: transportTypes[route.transport || 1] }],
-          euro_price: route.price
-        });
+      if (route.from.toString() === fromId && route.to.toString() === toId) {
+        matchingRoutes.push(processRoute(route, [{...route}]));
       }
     });
 
     // Process flying routes
     Object.entries(flyingRoutes).forEach(([key, route]) => {
-      if (route && route.from.toString() === fromId && 
-          (toId === '0' || route.to.toString() === toId)) {
-        const directPaths = parseDirectRoutes(route.direct_routes);
-        if (directPaths.length > 0) {
-          matchingRoutes.push({
-            ...route,
-            id: key,
-            type: 'flying',
-            from: locationsData[route.from],
-            to: locationsData[route.to],
-            direct_paths: directPaths,
-            euro_price: route.price
-          });
+      if (route.from.toString() === fromId && route.to.toString() === toId) {
+        const paths = parseDirectRoutes(route.direct_routes);
+        if (paths.length > 0) {
+          matchingRoutes.push(processRoute(route, paths));
         }
       }
     });
 
     // Process fixed routes
     Object.entries(fixedRoutes).forEach(([key, route]) => {
-      if (route && route.from.toString() === fromId && 
-          (toId === '0' || route.to.toString() === toId)) {
-        const directPaths = parseDirectRoutes(route.direct_routes);
-        if (directPaths.length > 0) {
-          matchingRoutes.push({
-            ...route,
-            id: key,
-            type: 'fixed',
-            from: locationsData[route.from],
-            to: locationsData[route.to],
-            direct_paths: directPaths,
-            euro_price: route.price
-          });
+      if (route.from.toString() === fromId && route.to.toString() === toId) {
+        const paths = parseDirectRoutes(route.direct_routes);
+        if (paths.length > 0) {
+          matchingRoutes.push(processRoute(route, paths));
         }
       }
     });
