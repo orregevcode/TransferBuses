@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import location from '../../../data/jsons/locations.json';
+import React from 'react';
 import TravelInfo from './TravelInfo';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,10 +8,8 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import useRouteCard from '../../../presentation/hooks/useRouteCard';
-import {getLocations} from "../../../data/api/trip_search_data";
 
 function RouteCard({ route, setIsSearchListIsOpen }) {
-  const [locations, setLocations] = useState(null);
   const {
     style,
     timeTravel,
@@ -21,108 +18,64 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
     calculateTravelTime,
     selectTransportIcon,
   } = useRouteCard(route);
+  
   const price = priceTravel + '.00';
 
-  const getLocationsLocal = async () => {
-    const temp = await getLocations();
-    const loc = temp.data
-    setLocations(loc);
-  }
-
-  useEffect(() => {
-    getLocationsLocal();
+  React.useEffect(() => {
     if (setIsSearchListIsOpen) {
       setIsSearchListIsOpen(true);
     }
-  }, []);
+  }, [setIsSearchListIsOpen]);
 
   return (
-    <>
-      {locations ? (
-        <>
-          <div style={style.routeCard}>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls='panel1a-content'
-                id='panel1a-header'
-              >
-                {travelInfo && travelInfo.length !== 0 && (
-                  <Box style={style.transportIcons}>
-                    {travelInfo.map((item, index) => (
-                      <Box style={style.airplaneBox} key={index}>
-                        {selectTransportIcon(
-                          item.route['transportation_type'].name,
-                          style.airplaneIcon
-                        )}
-                      </Box>
-                    ))}
-                  </Box>
-                )}
-                <Box style={style.box}>
-                  <Typography>
-                    {travelInfo &&
-                      travelInfo.length !== 0 &&
-                      travelInfo.map((travelInformation, index) => (
-                        <span key={index}>
-                          <React.Fragment key={index}>
-                            {index !== 0 && (
-                              <ArrowForwardIcon
-                                fontSize='small'
-                                sx={style.arrowStyle}
-                              />
-                            )}
-                            <span style={style.italicFont}>
-                              {travelInformation.route.from.name}
-                            </span>
-                          </React.Fragment>
-                        </span>
-                      ))}
-                    <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
-                    {route['direct_paths'] &&
-                      route['direct_paths'].length > 0 && (
-                        <span style={style.italicFont}>
-                          {
-                            route['direct_paths'][
-                              route['direct_paths'].length - 1
-                            ].to.name
-                          }
-                        </span>
-                      )}{' '}
-                  </Typography>
-                  <Box style={style.bottomContainer}>
-                    <Box style={style.priceContainer}>
-                      <Typography style={style.price}>{price}</Typography>
-                    </Box>
-                    <Typography style={style.time}>{timeTravel}</Typography>
-                  </Box>
+    <div style={style.routeCard}>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls='panel1a-content'
+          id='panel1a-header'
+        >
+          {route.direct_paths && route.direct_paths.length > 0 && (
+            <Box style={style.transportIcons}>
+              {route.direct_paths.map((path, index) => (
+                <Box style={style.airplaneBox} key={index}>
+                  {selectTransportIcon(
+                    path.transportation_type.name,
+                    style.airplaneIcon
+                  )}
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div>
-                  {travelInfo &&
-                    travelInfo.length !== 0 &&
-                    travelInfo.map((travelInformation, index) => (
-                      <TravelInfo
-                        travelInfo={travelInformation}
-                        key={index}
-                        price={price}
-                        timeTravel={() =>
-                          calculateTravelTime(
-                            travelInformation.route[`duration_minutes`]
-                          )
-                        }
-                      />
-                    ))}
-                </div>
-              </AccordionDetails>
-            </Accordion>
+              ))}
+            </Box>
+          )}
+          <Box style={style.box}>
+            <Typography>
+              <span style={style.italicFont}>{route.from.name}</span>
+              <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
+              <span style={style.italicFont}>{route.to.name}</span>
+            </Typography>
+            <Box style={style.bottomContainer}>
+              <Box style={style.priceContainer}>
+                <Typography style={style.price}>{price}</Typography>
+              </Box>
+              <Typography style={style.time}>{timeTravel}</Typography>
+            </Box>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <div>
+            {route.direct_paths &&
+              route.direct_paths.map((path, index) => (
+                <TravelInfo
+                  travelInfo={{ route: path }}
+                  key={index}
+                  price={price}
+                  timeTravel={() => calculateTravelTime(path.duration_minutes)}
+                />
+              ))}
           </div>
-        </>
-      ) : (
-        <h3>Loading...</h3>
-      )}
-    </>
+        </AccordionDetails>
+      </Accordion>
+    </div>
   );
 }
 

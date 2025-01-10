@@ -1,20 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SORT_OPTIONS } from '../../../../domain/entites/utils/constants/sortConstants';
+
+const initialState = {
+  filteredRoutes: [],
+};
 
 const cheapTripSearchSlice = createSlice({
   name: 'cheapTripSearch',
-  initialState: { filterBy: SORT_OPTIONS[0], filteredRoutes: null },
+  initialState,
   reducers: {
-    setFilter(state, { payload }) {
-      state.filterBy = payload;
-    },
-    setFilteredRoutes(state, { payload }) {
-      state.filteredRoutes = payload;
+    setFilteredRoutes: (state, action) => {
+      state.filteredRoutes = action.payload;
     },
   },
 });
-const { actions, reducer } = cheapTripSearchSlice;
 
-export const { setFilter, setFilteredRoutes } = actions;
-
-export default reducer;
+export const { setFilteredRoutes } = cheapTripSearchSlice.actions;
+export default cheapTripSearchSlice.reducer;

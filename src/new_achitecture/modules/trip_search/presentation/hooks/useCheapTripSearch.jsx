@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
-import locationsData from '../../data/jsons/locations.json'; // Import your local JSON file
+import locationsData from '../../data/jsons/locations.json';
+import directRoutes from '../../data/jsons/direct_routes.json';
+import flyingRoutes from '../../data/jsons/flying_routes.json';
+import fixedRoutes from '../../data/jsons/fixed_routes.json';
+import transportTypes from '../../data/jsons/transport.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilteredRoutes } from '../redux/reducers/cheapTripSearch/cheapTripSearchSlice';
 import { useMediaQuery } from '@material-ui/core';
@@ -18,25 +22,15 @@ const useCheapTripSearch = () => {
 
   const style = useMediaQuery('(max-width:650px)') ? resultStyle.sm : resultStyle.lg;
 
-  // Transform local JSON data into a more usable format
-  const transformLocations = (locData) => {
-    return Object.keys(locData).map((key) => ({
-      name: locData[key]?.name || 'Unnamed Location', // Provide default values if data is missing
-      latitude: locData[key]?.latitude || null,
-      longitude: locData[key]?.longitude || null,
-      country_name: locData[key]?.country_name || 'Unknown',
-      id: key,
-    }));
-  };
-
   // Initialize locations state with the imported JSON data
   useEffect(() => {
-    if (locationsData) {
-      const transformedLoc = transformLocations(locationsData);
-      setLocations(transformedLoc);
-      setLocationsKeySorted(transformedLoc.sort((a, b) => a.name.localeCompare(b.name)));
-    }
-  }, []); // This will only run once when the component is mounted
+    const transformedLoc = Object.entries(locationsData).map(([key, value]) => ({
+      id: key,
+      ...value
+    }));
+    setLocations(transformedLoc);
+    setLocationsKeySorted(transformedLoc.sort((a, b) => a.name.localeCompare(b.name)));
+  }, []);
 
   const clearFromField = () => {
     setFrom('');
@@ -48,35 +42,18 @@ const useCheapTripSearch = () => {
     setToKey('');
   };
 
-  const fromOptions = locationsKeysSorted
-    ? locationsKeysSorted
-        .map((loc) => ({
-          label: loc.name,
-          key: loc.id,
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
+  const fromOptions = locationsKeysSorted.map((loc) => ({
+    label: `${loc.name}, ${loc.country_name}`,
+    key: loc.id,
+  }));
 
-  const toOptions = locationsKeysSorted
-    ? [
-        { label: 'Anywhere', key: '0' },
-        ...locationsKeysSorted
-          .map((loc) => ({
-            label: loc.name,
-            key: loc.id,
-          }))
-          .sort((a, b) => a.label.localeCompare(b.label)),
-      ]
-    : [];
-
-  // Log locations to ensure they are loaded correctly
-  useEffect(() => {
-    console.log('Locations:', locations);
-    if (locations && locations.length > 0) {
-      console.log('From Options:', fromOptions);
-      console.log('To Options:', toOptions);
-    }
-  }, [locations, locationsKeysSorted]);
+  const toOptions = [
+    { label: 'Anywhere', key: '0' },
+    ...locationsKeysSorted.map((loc) => ({
+      label: `${loc.name}, ${loc.country_name}`,
+      key: loc.id,
+    }))
+  ];
 
   const cleanForm = () => {
     setFrom('');
@@ -84,53 +61,151 @@ const useCheapTripSearch = () => {
     setFromKey(null);
     setToKey('');
     setSelectedRoutesKeys(null);
+    dispatch(setFilteredRoutes([]));
   };
 
-  // Sort routes by price (mocking it here)
-  const sortByPrice = (arr) => {
-    return arr.sort((route1, route2) => route1['euro_price'] - route2['euro_price']);
+  // Helper function to normalize city name for comparison
+  const normalizeCityName = (name) => {
+    return name.toLowerCase().trim();
   };
 
-  // Submit function to get routes based on the selected "from" and "to"
-  const submit = async () => {
-    // Default "to" to 'Anywhere' if not set
-    if (to === '') {
-      setTo('Anywhere');
-      setToKey('0');
+  // Find location by name (partial match)
+  const findLocationByName = (searchName) => {
+    const normalizedSearch = normalizeCityName(searchName);
+    return Object.entries(locationsData).find(([key, location]) => 
+      normalizeCityName(location.name).includes(normalizedSearch)
+    );
+  };
+
+  // Helper function to parse route segments with better error handling
+  const parseDirectRoutes = (routeString) => {
+    if (!routeString) return [];
+    try {
+      return routeString.split(',').map(routeId => {
+        const directRoute = directRoutes[routeId];
+        if (!directRoute) return null;
+        return {
+          ...directRoute,
+          transportation_type: transportTypes[directRoute.transport || 1] || { name: 'Unknown' }
+        };
+      }).filter(route => route !== null);
+    } catch (error) {
+      console.error('Error parsing direct routes:', error);
+      return [];
     }
-
-    // Mock route fetching (replace with actual API call)
-    const routes = await getRoutesLocal();
-    const sortedRoutes = sortByPrice(routes);
-    setSelectedRoutesKeys(sortedRoutes);
   };
 
-  useEffect(() => {
-    if (selectedRoutesKeys) {
-      dispatch(setFilteredRoutes(selectedRoutesKeys));
-    }
-  }, [selectedRoutesKeys, dispatch]);
+  // Updated findRoutes function to handle all route types
+  const findRoutes = (fromId, toId) => {
+    console.log('Searching routes from:', fromId, 'to:', toId);
 
-  const getRoutesLocal = async () => {
-    // This function should fetch the routes based on "from" and "to"
-    // Use your own API logic here
-    return [
-      { euro_price: 100, route: 'Route 1' },
-      { euro_price: 150, route: 'Route 2' },
-      { euro_price: 90, route: 'Route 3' },
-    ]; // Mock response
+    const matchingRoutes = [];
+
+    // Process direct routes
+    Object.entries(directRoutes).forEach(([key, route]) => {
+      if (route && route.from.toString() === fromId && 
+          (toId === '0' || route.to.toString() === toId)) {
+        matchingRoutes.push({
+          ...route,
+          id: key,
+          type: 'direct',
+          from: locationsData[route.from],
+          to: locationsData[route.to],
+          direct_paths: [{ ...route, transportation_type: transportTypes[route.transport || 1] }],
+          euro_price: route.price
+        });
+      }
+    });
+
+    // Process flying routes
+    Object.entries(flyingRoutes).forEach(([key, route]) => {
+      if (route && route.from.toString() === fromId && 
+          (toId === '0' || route.to.toString() === toId)) {
+        const directPaths = parseDirectRoutes(route.direct_routes);
+        if (directPaths.length > 0) {
+          matchingRoutes.push({
+            ...route,
+            id: key,
+            type: 'flying',
+            from: locationsData[route.from],
+            to: locationsData[route.to],
+            direct_paths: directPaths,
+            euro_price: route.price
+          });
+        }
+      }
+    });
+
+    // Process fixed routes
+    Object.entries(fixedRoutes).forEach(([key, route]) => {
+      if (route && route.from.toString() === fromId && 
+          (toId === '0' || route.to.toString() === toId)) {
+        const directPaths = parseDirectRoutes(route.direct_routes);
+        if (directPaths.length > 0) {
+          matchingRoutes.push({
+            ...route,
+            id: key,
+            type: 'fixed',
+            from: locationsData[route.from],
+            to: locationsData[route.to],
+            direct_paths: directPaths,
+            euro_price: route.price
+          });
+        }
+      }
+    });
+
+    console.log('Found routes:', matchingRoutes);
+    return matchingRoutes.sort((a, b) => a.euro_price - b.euro_price);
+  };
+
+  const submit = () => {
+    if (!from) return;
+
+    try {
+      // Find location ID by name
+      const fromLocation = findLocationByName(from);
+      if (!fromLocation) {
+        console.error('Location not found:', from);
+        dispatch(setFilteredRoutes([]));
+        return;
+      }
+
+      const [fromId] = fromLocation;
+      const targetToKey = toKey || '0';
+      
+      console.log('Searching with IDs:', fromId, targetToKey);
+      const routes = findRoutes(fromId, targetToKey);
+      console.log('Found routes:', routes);
+      
+      setSelectedRoutesKeys(routes);
+      dispatch(setFilteredRoutes(routes));
+    } catch (error) {
+      console.error('Error finding routes:', error);
+      dispatch(setFilteredRoutes([]));
+    }
   };
 
   return {
     from,
-    selectFrom: (value) => { setFrom(value.label); setFromKey(value.key); },
-    selectTo: (value) => { setTo(value.label); setToKey(value.key); },
+    selectFrom: (value) => {
+      console.log('Selected from:', value);
+      setFrom(value.label.split(',')[0]); // Take only city name
+      setFromKey(value.key);
+    },
+    selectTo: (value) => {
+      console.log('Selected to:', value);
+      setTo(value.label.split(',')[0]); // Take only city name
+      setToKey(value.key);
+    },
     checkFromOption: fromOptions,
     checkToOption: toOptions,
     cleanForm,
     filteredRoutes,
     style,
     submit,
+    clearFromField,
+    clearToField,
   };
 };
 
