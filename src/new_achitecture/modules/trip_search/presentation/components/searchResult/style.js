@@ -22,16 +22,14 @@ const resultStyle = {
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
-      width: '99%',
-      marginRight: 13,
-      justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 4,
-      paddingBottom: 10,
+      justifyContent: 'flex-start',
+      marginTop: '8px',
+      gap: '12px'
     },
     time: {
-      color: 'grey',
-      marginLeft: 5,
+      color: '#607D8B',
+      fontSize: '0.875rem'
     },
     price: {
       color: '#fff',
@@ -58,11 +56,11 @@ const resultStyle = {
       margin: '0 2px',
     },
     transportIcons: {
-      //width: '70px',
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      //justifyContent: 'center',
+      justifyContent: 'flex-start',
+      marginBottom: '8px',
     },
     sortMenu: {
       paddingLeft: '24px',

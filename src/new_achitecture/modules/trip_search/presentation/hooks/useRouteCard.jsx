@@ -25,17 +25,29 @@ const useRouteCard = (route) => {
 
     let displayTime = '';
 
-    if (days > 0) displayTime += `${days}d`;
-    if (hours > 0) displayTime += ` ${hours}h`;
-    displayTime += ` ${minutes}min`;
-    return displayTime;
+    if (days > 0) displayTime += `${days}d `;
+    if (hours > 0) displayTime += `${hours}h `;
+    if (minutes > 0) displayTime += `${minutes}min`;
+    
+    return displayTime.trim();
   };
 
-  const timeTravel = calculateTravelTime(route?.['duration_minutes']);
+  // Calculate total duration from all direct_paths
+  const calculateTotalDuration = () => {
+    if (!route?.direct_paths || !Array.isArray(route.direct_paths)) {
+      return 0;
+    }
+    
+    return route.direct_paths.reduce((total, path) => {
+      return total + (path.duration_minutes || 0);
+    }, 0);
+  };
+
+  const totalDuration = calculateTotalDuration();
+  const timeTravel = calculateTravelTime(totalDuration);
   const priceTravel = `€ ${route?.['euro_price'] || 0}`;
 
   useEffect(() => {
-    // Ensure route and direct_paths exist and are arrays
     const tempKeys = route?.['direct_paths'];
     if (!Array.isArray(tempKeys)) {
       console.warn('direct_paths is not an array or is undefined:', tempKeys);

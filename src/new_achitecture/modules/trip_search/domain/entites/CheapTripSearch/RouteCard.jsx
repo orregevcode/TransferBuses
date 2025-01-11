@@ -35,37 +35,44 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          {route.direct_paths && route.direct_paths.length > 0 && (
-            <Box style={style.transportIcons}>
-              {route.direct_paths.map((path, index) => (
-                <Box style={style.airplaneBox} key={index}>
-                  {selectTransportIcon(
-                    path.transportation_type.name,
-                    style.airplaneIcon
-                  )}
-                </Box>
-              ))}
-            </Box>
-          )}
-         <Box style={style.box}>
-            <Typography>
-              {route.direct_paths.map((path, index) => (
-                <React.Fragment key={index}>
-                  <span style={style.italicFont}>{path.from.name}</span>
-                  <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
-                  {index === route.direct_paths.length - 1 && (
-                    <span style={style.italicFont}>{path.to.name}</span>
-                  )}
-                </React.Fragment>
-              ))}
-            </Typography>
-            <Box style={style.bottomContainer}>
-              <Box style={style.priceContainer}>
-                <Typography style={style.price}>{price}</Typography>
+          <Box style={style.routeContainer}>
+            {/* Transport Icons Section */}
+            {route.direct_paths && route.direct_paths.length > 0 && (
+              <Box style={style.transportIcons}>
+                {route.direct_paths.map((path, index) => (
+                  <Box style={style.airplaneBox} key={index}>
+                    {selectTransportIcon(
+                      path.transportation_type.name,
+                      style.airplaneIcon
+                    )}
+                  </Box>
+                ))}
               </Box>
-              <Typography style={style.time}>{timeTravel}</Typography>
+            )}
+            
+            {/* Route Details Section */}
+            <Box style={style.box}>
+              <Typography>
+                {route.direct_paths.map((path, index) => (
+                  <React.Fragment key={index}>
+                    <span style={style.italicFont}>{path.from.name}</span>
+                    <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
+                    {index === route.direct_paths.length - 1 && (
+                      <span style={style.italicFont}>{path.to.name}</span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </Typography>
+              
+              {/* Price and Total Duration Section */}
+              <Box style={style.bottomContainer}>
+                <Box style={style.priceContainer}>
+                  <Typography style={style.price}>{price}</Typography>
+                </Box>
+                <Typography style={style.time}>{timeTravel}</Typography>
+              </Box>
             </Box>
-         </Box>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <div>
