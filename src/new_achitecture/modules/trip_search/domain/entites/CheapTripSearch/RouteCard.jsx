@@ -47,11 +47,17 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
               ))}
             </Box>
           )}
-          <Box style={style.box}>
+         <Box style={style.box}>
             <Typography>
-              <span style={style.italicFont}>{route.from.name}</span>
-              <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
-              <span style={style.italicFont}>{route.to.name}</span>
+              {route.direct_paths.map((path, index) => (
+                <React.Fragment key={index}>
+                  <span style={style.italicFont}>{path.from.name}</span>
+                  <ArrowForwardIcon fontSize='small' sx={style.arrowStyle} />
+                  {index === route.direct_paths.length - 1 && (
+                    <span style={style.italicFont}>{path.to.name}</span>
+                  )}
+                </React.Fragment>
+              ))}
             </Typography>
             <Box style={style.bottomContainer}>
               <Box style={style.priceContainer}>
@@ -59,7 +65,7 @@ function RouteCard({ route, setIsSearchListIsOpen }) {
               </Box>
               <Typography style={style.time}>{timeTravel}</Typography>
             </Box>
-          </Box>
+         </Box>
         </AccordionSummary>
         <AccordionDetails>
           <div>
